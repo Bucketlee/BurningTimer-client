@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
 import AddList from "./AddList";
+import OptionPopup from "./OptionPopup";
 
 export default function Categories({ categories, onSelect, createNewCategory }) {
   const [list, setList] = useState(categories);
@@ -20,7 +21,6 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
   }
 
   function onDragEnter(e) {
-    console.log(grab.innerText, e.target.innerText);
     const grabPosition = list.indexOf(grab.innerText);
     const targetPosition = list.indexOf(e.target.innerText);
 
@@ -44,6 +44,20 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
     }
   }
 
+  function editTargetCategory(el, newValue) {
+    const result = list.map(category => el === category ? newValue : category);
+    setList(result);
+  }
+
+  function deleteTargetCategory(el) {
+    const index = list.indexOf(el);
+
+    const newList = list.slice();
+    newList.splice(index, 1);
+
+    setList(newList);
+  }
+
   return (
     <CategoriesWrapper>
       <TitleWrapper>Categories</TitleWrapper>
@@ -59,6 +73,10 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
               onDragEnd={(e) => onDragEnd(e)}
             >
               <ButtonWrapper onClick={(e) => onSelect(e)}>{el}</ButtonWrapper>
+              <OptionPopup
+                confirmEdit={(value) => editTargetCategory(el, value)}
+                confirmDelete={() => deleteTargetCategory(el)}
+              />
             </LiWrapper>
           )
         )}
@@ -75,15 +93,15 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
 }
 
 const CategoriesWrapper = styled.div`
-  padding: 20px 0;
   background-color: #F2F2F2;
+  max-height: 100vh;
 `
 
 const TitleWrapper = styled.div`
   padding-left: 15px;
   font-size: 13px;
   font-weight: 600;
-  color: #2d30364d;
+  color: #2D30364d;
 `
 
 const UlWrapper = styled.ul`
@@ -106,7 +124,7 @@ const ButtonWrapper = styled.button`
   padding: 0;
   background: none;
   border: none;
-  line-height: 35px;
+  line-height: 40px;
   color: #797978;
   text-align: left;
   font-size: 15px;
