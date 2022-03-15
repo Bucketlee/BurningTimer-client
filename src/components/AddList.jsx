@@ -39,12 +39,12 @@ export default function AddList({
 }
 
 const AddListWrapper = styled.div`
-  height: 35px;
+  height: 40px;
   display: grid;
-  grid-template-columns: 35px auto;
+  grid-template-columns: 40px auto;
 
   &:focus-within {
-    background-color: white;
+    background-color: #FFFFFF;
   }
 `
 
@@ -68,7 +68,7 @@ const InputWrapper = styled.input`
 const PlusOutlinedStyled = {
   color: "#27251F",
   fontSize: "15px",
-  margin: "10px",
+  margin: "12.5px",
 }
 
 AddList.propTypes = {
