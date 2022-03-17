@@ -26,6 +26,14 @@ class Label {
     return targetLabel.labelId;
   }
 
+  static getLabelsWithCategoryId(labels, categoryId) {
+    const labelsWithCategoryId = [];
+    for (let i = 0; i < labels.length; i += 1) {
+      if (labels[i].categoryId === categoryId) labelsWithCategoryId.push(labels[i]);
+    }
+    return labelsWithCategoryId;
+  }
+
   static getActiveLabels(labels) {
     const activedLabels = [];
     for (let i = 0; i < labels.length; i += 1) {
@@ -34,10 +42,9 @@ class Label {
     return activedLabels;
   }
 
-  static sortActivedLabelsByPriority(labels) {
-    const activedLabels = Label.getActiveLabels(labels);
-    activedLabels.sort((a, b) => a.priority - b.priority);
-    return activedLabels;
+  static sortLabelsByPriority(labels) {
+    labels.sort((a, b) => a.priority - b.priority);
+    return labels;
   }
 
   static findLabelWithTargetName(labels, name) {

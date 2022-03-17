@@ -9,19 +9,23 @@ export default function Labels({ category }) {
   const [grab, setGrab] = useState(null);
   const [newLabel, setNewLabel] = useState("");
 
-  const getLabels = useCallback(async () => {
+  const getLabels = useCallback(async (categoryId) => {
     try {
       const data = await Api.label.getAllLabels();
-      const sortedLabels = Label.sortActivedLabelsByPriority(data);
-      setLabels(sortedLabels);
+      const labelsWithCategoryId = Label.getLabelsWithCategoryId(data, categoryId);
+      const ActivedLabels = Label.getActiveLabels(labelsWithCategoryId);
+      const sortedLabels = Label.sortLabelsByPriority(ActivedLabels);
+      if (sortedLabels) {
+        setLabels(sortedLabels);
+      }
     } catch(err) {
       // 오류 컨트롤 필요
     }
   }, []);
 
   useEffect(() => {
-    getLabels();
-  }, [getLabels]);
+    getLabels(category._id);
+  }, [getLabels, category]);
 
   function onDragOver(e) {
     e.preventDefault();
@@ -54,7 +58,7 @@ export default function Labels({ category }) {
       const grabbing = labels[grabPosition];
       await Api.label.updateLabel(grabbing, grabbing.name, targetPosition + 1);
       // 오류 컨트롤 필요
-      getLabels();
+      getLabels(category._id);
       setGrab(null);
     }
   }
@@ -76,7 +80,7 @@ export default function Labels({ category }) {
         setLabels([...labels, targetLabel]);
         await Api.label.createNewLabel(category._id, targetLabel.name, targetLabel.priority);
         // 오류 컨트롤 필요
-        getLabels();
+        getLabels(category._id);
         setNewLabel("");
       } else {
         alert("이미 라벨이 있음");
@@ -98,7 +102,7 @@ export default function Labels({ category }) {
     try {
       await Api.label.updateLabel(targetLabel, newName, targetLabel.priority);
       // 오류 컨트롤 필요
-      getLabels();
+      getLabels(category._id);
     } catch (err) {
       alert("문제가 있음");
     }

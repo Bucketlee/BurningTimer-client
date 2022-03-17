@@ -12,16 +12,16 @@ export default function Categories({ onSelect }) {
   const getCategories = useCallback(async () => {
     try {
       const data = await Api.category.getAllCategories();
-      const sortedCategories = Category.sortActivedCategoriesByPriority(data);
+      const ActivedCateogries = Category.getActiveCategories(data);
+      const sortedCategories = Category.sortCategoriesByPriority(ActivedCateogries);
 
       if (sortedCategories) {
         setCategories(sortedCategories);
-        onSelect(sortedCategories[0]);
       }
     } catch(err) {
       // 오류 컨트롤 필요
     }
-  }, [onSelect]);
+  }, []);
 
   useEffect(() => {
     getCategories();

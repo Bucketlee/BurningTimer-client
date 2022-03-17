@@ -32,10 +32,9 @@ class Category {
     return activedCategories;
   }
 
-  static sortActivedCategoriesByPriority(categories) {
-    const activedCategories = Category.getActiveCategories(categories);
-    activedCategories.sort((a, b) => a.priority - b.priority);
-    return activedCategories;
+  static sortCategoriesByPriority(categories) {
+    categories.sort((a, b) => a.priority - b.priority);
+    return categories;
   }
 
   static findCategoryWithTargetName(categories, name) {
