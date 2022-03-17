@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import { Popover, Modal } from "antd";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import { MoreOutlined, FormOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 
 

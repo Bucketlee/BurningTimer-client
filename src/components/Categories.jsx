@@ -133,6 +133,11 @@ const ButtonWrapper = styled.button`
     color: #27251F;
     font-weight: 600;
   }
+
+  &:focus {
+    color: #27251F;
+    font-weight: 600;
+  }
 `
 
 Categories.propTypes = {

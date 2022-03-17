@@ -21,7 +21,7 @@ export default function Menu({ onSelect, logout }) {
 
   const menuList = menu.map((m, i) => {
     return (
-      <Popover content={<PopoverContentWrapper>{m}</PopoverContentWrapper>} trigger="hover">
+      <Popover key={`menu-popover-${i}`} content={<PopoverContentWrapper>{m}</PopoverContentWrapper>} trigger="hover">
         <ButtonWrapper current={current === m} onClick={() => onSelectMenu(m)}>
           {current === m ? <DotWrapper /> : <div />}
           {icons[i]}

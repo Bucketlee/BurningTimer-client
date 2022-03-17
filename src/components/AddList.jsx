@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { PlusOutlined } from "@ant-design/icons";
 
-
 export default function AddList({
   placeholder,
   value,
@@ -11,7 +10,6 @@ export default function AddList({
   onPressEnter,
   onPressEscape,
 }) {
-  console.log(value);
   function onKeyPress(e) {
     if (e.key === "Enter") {
       onPressEnter();

@@ -120,7 +120,7 @@ export default class Api {
     async updateLabel(label, newName, priority) {
       try {
         const form = {
-          newName,
+          name: newName,
           priority,
         };
         const { data } = await instance.put("/labels/" + label._id, form);
