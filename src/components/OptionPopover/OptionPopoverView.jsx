@@ -1,58 +1,20 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
-import { Popover, Modal } from "antd";
+import { Popover } from "antd";
 import "antd/dist/antd.min.css";
-import { MoreOutlined, FormOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { MoreOutlined } from "@ant-design/icons";
 
 
-export default function OptionPopover({ confirmEdit, confirmDelete }) {
-  const [visible, setVisible] = useState(false);
-
-  const editInputRef = useRef(null);
-
-  const { confirm } = Modal;
-
-  function showEditConfirm() {
-    setVisible(false);
-    confirm({
-      title: "변경할 내용을 입력해주세요.",
-      icon: <FormOutlined style={{ color: "#DA291C" }} />,
-      content: <input ref={editInputRef} />,
-      okText: "변경",
-      cancelText: "취소",
-      onOk() {
-        confirmEdit(editInputRef.current.value);
-      },
-      onCancel() {
-      },
-    });
-  }
-
-  function showDeleteConfirm() {
-    setVisible(false);
-    confirm({
-      title: "정말로 삭제하시겠습니까?",
-      icon: <ExclamationCircleOutlined style={{ color: "#DA291C" }} />,
-      content: "삭제해도 해당 카테고리/라벨로 진행한 리포트는 남아있습니다.",
-      okText: "삭제",
-      okType: "danger",
-      cancelText: "취소",
-      onOk() {
-        confirmDelete();
-      },
-      onCancel() {
-      },
-    });
-  }
+export default function OptionPopoverView({ visible, onVisibleChange, onClickEdit, onClickDelete }) {
 
   const PopoverContent = (
     <PopoverContentWrapper>
       <Global styles={PopoverStyled} />
       <PopoverTitleWrapper>어떤 작업을 하시겠습니까?</PopoverTitleWrapper>
-      <PopoverButtonWrapper onClick={() => showEditConfirm()} color="#DA291C" backgroundColor="#F2F2F2">수정</PopoverButtonWrapper>
-      <PopoverButtonWrapper onClick={() => showDeleteConfirm()} color="#F2F2F2" backgroundColor="#DA291C">삭제</PopoverButtonWrapper>
+      <PopoverButtonWrapper onClick={() => onClickEdit()} color="#DA291C" backgroundColor="#F2F2F2">수정</PopoverButtonWrapper>
+      <PopoverButtonWrapper onClick={() => onClickDelete()} color="#F2F2F2" backgroundColor="#DA291C">삭제</PopoverButtonWrapper>
     </PopoverContentWrapper>
   );
 
@@ -62,12 +24,12 @@ export default function OptionPopover({ confirmEdit, confirmDelete }) {
         content={PopoverContent}
         trigger="click"
         visible={visible}
-        onVisibleChange={() => setVisible(!visible)}
+        onVisibleChange={() => onVisibleChange()}
       >
         <ButtonWrapper type="button"><MoreOutlined /></ButtonWrapper>
       </Popover>
     </PopoverWrapper>
-  )
+  );
 }
 
 const PopoverWrapper = styled.div`
@@ -144,7 +106,9 @@ const PopoverStyled = css`
   }
 `
 
-OptionPopover.propTypes = {
-  OptionPopover: PropTypes.array,
-  createNewLabel: PropTypes.func,
+OptionPopoverView.propTypes = {
+  visible: PropTypes.bool,
+  onVisibleChange: PropTypes.func,
+  onClickEdit: PropTypes.func,
+  onClickDelete: PropTypes.func,
 };
