@@ -11,5 +11,4 @@ const Template = (args) => <Menu {...args} />;
 
 export const MenuSample = Template.bind({});
 MenuSample.args = {
-  onSelect: (e) => console.log("onSelect 실행", e),
 };

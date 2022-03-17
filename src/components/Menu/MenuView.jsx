@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import styled from "@emotion/styled";
 import { Popover } from "antd";
 import { UnorderedListOutlined, FieldTimeOutlined, LineChartOutlined, LogoutOutlined } from "@ant-design/icons";
 
-export default function Menu({ onSelect, logout }) {
-  const [current, setCurrent] = useState("Label");
-
+export default function MenuView({ current, onSelect, onLogout }) {
   const menu = ["Label", "Timer", "Report"];
   const icons = [
     <UnorderedListOutlined style={current === menu[0] ? ActiveIconStyled : WaitIconStyled} />,
@@ -14,15 +11,10 @@ export default function Menu({ onSelect, logout }) {
     <LineChartOutlined style={current === menu[2] ? ActiveIconStyled : WaitIconStyled} />
   ];
 
-  function onSelectMenu(name) {
-    onSelect(name);
-    setCurrent(name);
-  }
-
-  const menuList = menu.map((m, i) => {
+  const list = menu.map((m, i) => {
     return (
       <Popover key={`menu-popover-${i}`} content={<PopoverContentWrapper>{m}</PopoverContentWrapper>} trigger="hover">
-        <ButtonWrapper current={current === m} onClick={() => onSelectMenu(m)}>
+        <ButtonWrapper current={current === m} onClick={() => onSelect(m)}>
           {current === m ? <DotWrapper /> : <div />}
           {icons[i]}
         </ButtonWrapper>
@@ -32,17 +24,16 @@ export default function Menu({ onSelect, logout }) {
 
   return (
     <MenuWrapper>
-      <div>{menuList}</div>
+      <div>{list}</div>
       <LogoutWarpper>
-        <ButtonWrapper onClick={() => logout()}>
+        <ButtonWrapper onClick={() => onLogout()}>
           <div></div>
           <LogoutOutlined style={ActiveIconStyled} />
         </ButtonWrapper>
       </LogoutWarpper>
     </MenuWrapper>
-  )
+  );
 }
-
 
 const MenuWrapper = styled.div`
   background-color: #F2F2F2;
@@ -95,7 +86,3 @@ const LogoutWarpper = styled.div`
   width: 82px;
   font-size: 10px;
 `
-
-Menu.propTypes = {
-  onSelect: PropTypes.func,
-};
