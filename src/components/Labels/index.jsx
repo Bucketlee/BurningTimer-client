@@ -4,7 +4,6 @@ import Api from "../../api";
 import LabelsView from "./LabelsView";
 import Label from "../../models/label";
 
-
 export default function Labels({ category }) {
   const [labels, setLabels] = useState([]);
   const [grab, setGrab] = useState(null);
@@ -55,6 +54,7 @@ export default function Labels({ category }) {
       const grabbing = labels[grabPosition];
       await Api.label.updateLabel(grabbing, grabbing.name, targetPosition + 1);
       // 오류 컨트롤 필요
+      getLabels();
       setGrab(null);
     }
   }
@@ -137,5 +137,5 @@ export default function Labels({ category }) {
       confirmEdit={editTargetLabel}
       confirmDelete={deleteTargetLabel}
     />
-  )
+  );
 }

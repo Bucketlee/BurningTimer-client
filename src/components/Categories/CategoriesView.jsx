@@ -5,13 +5,8 @@ import styled from "@emotion/styled";
 import AddList from "../AddList";
 import OptionPopup from "../OptionPopup";
 
-export default function LabelsView({
-  title,
+export default function CategoriesView({
   contents,
-  onChangeAddList,
-  onPressEnterAddList,
-  onPressEscapeAddList,
-  AddListValue,
   onDragOver,
   onDragStart,
   onDragEnter,
@@ -19,24 +14,19 @@ export default function LabelsView({
   onClickContent,
   confirmEditOptionPopup,
   confirmDeleteOptionPopup,
+  onChangeAddList,
+  onPressEnterAddList,
+  onPressEscapeAddList,
+  AddListValue,
 }) {
   return (
-    <div>
-      <TitleWrapper>{title}</TitleWrapper>
-      <AddListWrapper>
-        <AddList
-          placeholder={"새로운 라벨"}
-          onChange={(e) => onChangeAddList(e.target.value)}
-          onPressEnter={() => onPressEnterAddList(AddListValue)}
-          onPressEscape={() => onPressEscapeAddList()}
-          value={AddListValue}
-        />
-      </AddListWrapper>
+    <CategoriesViewWrapper>
+      <TitleWrapper>Categories</TitleWrapper>
       <UlWrapper>
         {contents.map(
           name => (
             <LiWrapper
-              key={`label-${name}`}
+              key={`category-${name}`}
               draggable
               onDragOver={(e) => onDragOver(e)}
               onDragStart={(e) => onDragStart(e)}
@@ -45,32 +35,34 @@ export default function LabelsView({
             >
               <ButtonWrapper onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
               <OptionPopup
-                confirmEditO={(value) => confirmEditOptionPopup(name, value)}
+                confirmEdit={(value) => confirmEditOptionPopup(name, value)}
                 confirmDelete={() => confirmDeleteOptionPopup(name)}
               />
             </LiWrapper>
           )
         )}
       </UlWrapper>
-    </div>
+      <AddList
+        placeholder={"새로운 카테고리"}
+        onChange={(e) => onChangeAddList(e.target.value)}
+        onPressEnter={() => onPressEnterAddList(AddListValue)}
+        onPressEscape={() => onPressEscapeAddList("")}
+        value={AddListValue}
+      />
+    </CategoriesViewWrapper>
   );
 }
 
-const TitleWrapper = styled.h2`
-  margin-bottom: 20px;
-  font-size: 48px;
-  font-weight: 800;
+const CategoriesViewWrapper = styled.div`
+  background-color: #F2F2F2;
+  max-height: 100vh;
 `
 
-const AddListWrapper = styled.div`
-  padding: 8px;
-  background-color: #F2F2F2;
-  border: 1px solid #E2E2E2;
-  border-radius: 3px;
-
-  input {
-    font-size: 14px !important;
-  }
+const TitleWrapper = styled.div`
+  padding-left: 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #2D30364d;
 `
 
 const UlWrapper = styled.ul`
@@ -80,10 +72,9 @@ const UlWrapper = styled.ul`
 `
 
 const LiWrapper = styled.li`
-  padding: 7px 15px;
+  padding: 0 15px;
   display: grid;
-  grid-template-columns: auto 40px;
-  border-bottom: 1px solid #E2E2E2;
+  grid-template-columns: auto 35px;
 
   &:hover {
     background-color: #E2E2E2;
@@ -97,21 +88,21 @@ const ButtonWrapper = styled.button`
   line-height: 40px;
   color: #797978;
   text-align: left;
-  font-size: 14px;
+  font-size: 15px;
 
   &:hover {
     color: #27251F;
     font-weight: 600;
   }
+
+  &:focus {
+    color: #27251F;
+    font-weight: 600;
+  }
 `
 
-LabelsView.propTypes = {
-  title: PropTypes.string,
+CategoriesView.propTypes = {
   contents: PropTypes.array,
-  onChangeAddList: PropTypes.func,
-  onPressEnterAddList: PropTypes.func,
-  onPressEscapeAddList: PropTypes.func,
-  AddListValue: PropTypes.string,
   onDragOver: PropTypes.func,
   onDragStart: PropTypes.func,
   onDragEnter: PropTypes.func,
@@ -119,4 +110,8 @@ LabelsView.propTypes = {
   onClickContent: PropTypes.func,
   confirmEditOptionPopup: PropTypes.func,
   confirmDeleteOptionPopup: PropTypes.func,
+  onChangeAddList: PropTypes.func,
+  onPressEnterAddList: PropTypes.func,
+  onPressEscapeAddList: PropTypes.func,
+  AddListValue: PropTypes.string,
 };

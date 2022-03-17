@@ -73,7 +73,7 @@ export default class Api {
     async updateCategory(category, newName, priority) {
       try {
         const form = {
-          newName,
+          name: newName,
           priority,
         };
         const { data } = await instance.put("/categories/" + category._id, form);
