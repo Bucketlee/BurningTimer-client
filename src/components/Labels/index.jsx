@@ -72,7 +72,7 @@ export default function Labels({ category }) {
       const isIncludesInLabels = Label.findLabelWithTargetName(labels, name);
 
       if (!isIncludesInLabels) {
-        const targetLabel = Label.fromJson({ name: name, priority: labels.length + 1 })
+        const targetLabel = Label.fromJson({ name: name, priority: labels.length + 1 });
         setLabels([...labels, targetLabel]);
         await Api.label.createNewLabel(category._id, targetLabel.name, targetLabel.priority);
         // 오류 컨트롤 필요
@@ -102,15 +102,14 @@ export default function Labels({ category }) {
     } catch (err) {
       alert("문제가 있음");
     }
-
   }
 
-  async function deleteTargetLabel(target) {
+  async function deleteTargetLabel(name) {
     const newLabels = [];
     let targetLabel;
 
     for (let i = 0; i < labels.length; i += 1) {
-      if (labels[i].name !== target) {
+      if (labels[i].name !== name) {
         newLabels.push(labels[i]);
       } else {
         targetLabel = labels[i];

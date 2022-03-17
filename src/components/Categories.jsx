@@ -1,14 +1,34 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 
+import Api from "../api";
 import AddList from "./AddList";
 import OptionPopup from "./OptionPopup";
+import Category from "../models/category";
 
-export default function Categories({ categories, onSelect, createNewCategory }) {
-  const [list, setList] = useState(categories);
+export default function Categories({ onSelect }) {
+  const [categories, setCategories] = useState([]);
   const [grab, setGrab] = useState(null);
   const [newCategory, setNewCategory] = useState("");
+
+  const getCategories = useCallback(async () => {
+    try {
+      const data = await Api.category.getAllCategories();
+      const sortedCategories = Category.sortActivedCategoriesByPriority(data);
+
+      if (sortedCategories) {
+        setCategories(sortedCategories);
+        onSelect(sortedCategories[0]);
+      }
+    } catch(err) {
+      // 오류 컨트롤 필요
+    }
+  }, [onSelect]);
+
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
 
   function onDragOver(e) {
     e.preventDefault();
@@ -21,61 +41,116 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
   }
 
   function onDragEnter(e) {
-    const grabPosition = list.indexOf(grab.innerText);
-    const targetPosition = list.indexOf(e.target.innerText);
+    const grabPosition = getCategoryPosition(grab.innerText);
+    const targetPosition = getCategoryPosition(e.target.innerText);
 
     if (targetPosition !== -1) {
-      const newList = [ ...list ];
-      newList[grabPosition] = newList.splice(targetPosition, 1, newList[grabPosition])[0];
-
-      setList(newList);
+      const newCategories = [ ...categories ];
+      newCategories[grabPosition] = newCategories.splice(targetPosition, 1, newCategories[grabPosition])[0];
+      setCategories(newCategories);
     }
   }
 
-  function onDragEnd(e) {
+  async function onDragEnd(e) {
     e.dataTransfer.dropEffect = "move";
-  }
 
-  function addNewCategory() {
-    if (newCategory !== "") {
-      createNewCategory(newCategory);
-      setList([...list, newCategory]);
-      setNewCategory("");
+    const grabPosition = getCategoryPosition(grab.innerText);
+    const targetPosition = getCategoryPosition(e.target.innerText);
+
+    if (targetPosition !== -1) {
+      const grabbing = categories[grabPosition];
+      await Api.category.updateCategory(grabbing, grabbing.name, targetPosition + 1);
+      // 오류 컨트롤 필요
+      setGrab(null);
     }
   }
 
-  function editTargetCategory(el, newValue) {
-    const result = list.map(category => el === category ? newValue : category);
-    setList(result);
+  function getCategoryPosition(name) {
+    for (let i = 0; i < categories.length; i += 1 ) {
+      if (categories[i].name === name) {
+        return i;
+      }
+    }
   }
 
-  function deleteTargetCategory(el) {
-    const index = list.indexOf(el);
+  async function addNewCategory(name) {
+    console.log(name);
+    if (name !== "") {
+      const isIncludesInCategories = Category.findCategoryWithTargetName(categories, name);
+      console.log(isIncludesInCategories);
+      if (!isIncludesInCategories) {
+        const targetCategory = Category.fromJson({ name: name, priority: categories.length + 1 });
+        setCategories([...categories, targetCategory]);
+        await Api.category.createNewCategory(targetCategory.name, targetCategory.priority);
+        // 오류 컨트롤 필요
+      }
+      getCategories();
+      setNewCategory("");
+    } else {
+      alert("이미 카테고리 있음");
+    }
+  }
 
-    const newList = list.slice();
-    newList.splice(index, 1);
+  function onSelectCategory(name) {
+    for (let i = 0; i < categories.length; i += 1) {
+      if (categories[i].name === name) {
+        onSelect(categories[i]);
+        return;
+      }
+    }
+  }
 
-    setList(newList);
+  async function editTargetCategory(oldName, newName) {
+    let targetCategory;
+    for (let i = 0; i < categories.length; i += 1) {
+      if (categories[i].name === oldName) {
+        targetCategory = categories[i];
+      }
+    }
+    try {
+      await Api.category.updateCategory(targetCategory, newName, targetCategory.priority);
+      // 오류 컨트롤 필요
+      getCategories();
+    } catch (err) {
+      alert("문제가 있음");
+    }
+  }
+
+  async function deleteTargetCategory(name) {
+    const newCategories = [];
+    let targetCategory;
+
+    for (let i = 0; i < categories.length; i += 1) {
+      if (categories[i].name !== name) {
+        newCategories.push(categories[i]);
+      } else {
+        targetCategory = categories[i];
+      }
+    }
+
+    setCategories(newCategories);
+    await Api.category.deleteCategory(targetCategory);
+    // 오류 컨트롤 필요
   }
 
   return (
     <CategoriesWrapper>
       <TitleWrapper>Categories</TitleWrapper>
       <UlWrapper>
-        {list.map(
+        {categories.map(
           el => (
             <LiWrapper
-              key={`category-${el}`}
+              key={`category-${el.name}`}
               draggable
               onDragOver={(e) => onDragOver(e)}
               onDragStart={(e) => onDragStart(e)}
               onDragEnter={(e) => onDragEnter(e)}
               onDragEnd={(e) => onDragEnd(e)}
             >
-              <ButtonWrapper onClick={(e) => onSelect(e)}>{el}</ButtonWrapper>
+              <ButtonWrapper onClick={() => onSelectCategory(el.name)}>{el.name}</ButtonWrapper>
               <OptionPopup
-                confirmEdit={(value) => editTargetCategory(el, value)}
-                confirmDelete={() => deleteTargetCategory(el)}
+                confirmEdit={(value) => editTargetCategory(el.name, value)}
+                confirmDelete={() => deleteTargetCategory(el.name)}
               />
             </LiWrapper>
           )
@@ -84,7 +159,7 @@ export default function Categories({ categories, onSelect, createNewCategory }) 
       <AddList
         placeholder={"새로운 카테고리"}
         onChange={(e) => setNewCategory(e.target.value)}
-        onPressEnter={() => addNewCategory()}
+        onPressEnter={() => addNewCategory(newCategory)}
         onPressEscape={() => setNewCategory("")}
         value={newCategory}
       />
@@ -141,7 +216,5 @@ const ButtonWrapper = styled.button`
 `
 
 Categories.propTypes = {
-  categories: PropTypes.array,
   onSelect: PropTypes.func,
-  createNewCategory: PropTypes.func,
 };

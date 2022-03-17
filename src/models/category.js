@@ -23,6 +23,28 @@ class Category {
     const targetCategory = categories.find(Category => Category.name === categoryName);
     return targetCategory.CategoryId;
   }
+
+  static getActiveCategories(categories) {
+    const activedCategories = [];
+    for (let i = 0; i < categories.length; i += 1) {
+      if (categories[i].priority !== 0) activedCategories.push(categories[i]);
+    }
+    return activedCategories;
+  }
+
+  static sortActivedCategoriesByPriority(categories) {
+    const activedCategories = Category.getActiveCategories(categories);
+    activedCategories.sort((a, b) => a.priority - b.priority);
+    return activedCategories;
+  }
+
+  static findCategoryWithTargetName(categories, name) {
+    for (let i = 0; i < categories.length; i += 1) {
+      if (categories[i].name === name) {
+        return categories[i];
+      }
+    }
+  }
 }
 
 export default Category;
