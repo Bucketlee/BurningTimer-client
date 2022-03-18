@@ -58,7 +58,7 @@ export default function LabelsView({
 
 const TitleWrapper = styled.h2`
   margin-bottom: 20px;
-  font-size: 48px;
+  font-size: 32px;
   font-weight: 800;
 `
 

@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Empty } from "antd";
 
-import Menu from "./Menu";
-import Categories from "./Categories";
-import Labels from "./Labels";
+import Menu from "../Menu";
+import Categories from "../Categories";
+import Labels from "../Labels";
 
-export default function TodoPage() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  useEffect(() => {
-    // 임시로 로그인시킴
-    localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpYXQiOjE2NDc0OTcwNzksImV4cCI6MTY0NzU4MzQ3OX0.DEwZE_Bk0NnvtIdkNsmC1QtSGGksAxJ4I7JTSth6Fkw")
-  }, []);
-
-  function onSelectCategory(category) {
-    setSelectedCategory(category);
-  }
-
+export default function TodoPageView({ onSelectCategory, selectedCategory }) {
   return (
-    <TodoPageWrapper>
+    <TodoPageViewWrapper>
       <MenuWrapper>
         <Menu />
       </MenuWrapper>
@@ -34,11 +24,11 @@ export default function TodoPage() {
           </EmptyWrapper>
         )}
       </LabelsWrapper>
-    </TodoPageWrapper>
+    </TodoPageViewWrapper>
   )
 }
 
-const TodoPageWrapper = styled.section`
+const TodoPageViewWrapper = styled.section`
   font-family: sans-serif !important;
   display: grid;
   grid-template-columns: 82px 220px auto;
@@ -47,12 +37,12 @@ const TodoPageWrapper = styled.section`
 `
 
 const MenuWrapper = styled.div`
-  padding: 20px 0;
+  padding: 30px 0;
   text-align: center;
 `
 
 const CategoriesWrapper = styled.div`
-  padding: 20px 0;
+  padding: 30px 0;
   border-left: 1px solid rgba(0,0,0,.08);
   max-height: 100vh;
   overflow: scroll;
@@ -60,7 +50,7 @@ const CategoriesWrapper = styled.div`
 
 const LabelsWrapper = styled.div`
   background-color: #FFFFFF;
-  padding: 20px;
+  padding: 25px;
   max-height: 100vh;
   overflow: scroll;
 `

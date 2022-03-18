@@ -11,5 +11,4 @@ const Template = (args) => <TodoPage {...args} />;
 
 export const TodoPageSample = Template.bind({});
 TodoPageSample.args = {
-
 };
