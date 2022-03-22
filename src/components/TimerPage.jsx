@@ -1,5 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "@emotion/styled";
+import { Global, css } from "@emotion/react";
+import { notification } from "antd";
 
 import TimerSteps from "./TimerSteps";
 import TaskSetting from "./TaskSetting";
@@ -18,6 +20,12 @@ export default function TimerPage({ }) {
     if (newTask.pauseAndRestarts === undefined) {
       newTask.pauseAndRestarts = [];
     }
+
+    if (key === "categoryId" && (newTask.labelId || newTask.goalTime)) {
+      newTask.labelId = undefined;
+      newTask.goalTime = undefined;
+    }
+
     newTask[key] = value;
     localStorage.setItem("task", newTask);
   }, [newTask]);
@@ -47,12 +55,55 @@ export default function TimerPage({ }) {
     }
   }, [current, newTask, setNewTask]);
 
+  const steps = [
+    {
+      title: "라벨 설정",
+      description: "진행 작업을 설정합니다",
+    },
+    {
+      title: "버닝 타임",
+      description: "작업에 몰입합니다",
+    },
+    {
+      title: "완료 기록",
+      description: "완료 기록을 보여줍니다",
+    }
+  ];
+
+  function checkTaskSetting() {
+    if (!newTask.categoryId) {
+      return openNotification("top", "카테고리가 비어있습니다", "Category 탭을 눌러 선택해주세요.");
+    }
+
+    if (!newTask.labelId) {
+      return openNotification("top", "라벨이 비어있습니다", "Label 탭을 눌러 선택해주세요.");
+    }
+
+    if (!newTask.goalTime) {
+      return openNotification("top", "목표 시간이 비어있습니다", "Goal Time 탭을 눌러 선택해주세요.");
+    }
+
+    setCurrent(c => c + 1);
+  }
+
+  function openNotification(placement, title, text) {
+    return notification.info({
+      message: title,
+      description: text,
+      placement,
+      duration: 10000,
+    });
+  };
+
   return (
     <TimerPageWrapper>
+      <Global styles={notificationStyled} />
       <TimerStepsWrapper>
         <TimerSteps
-          onChangeCurrent={setCurrent}
+          current={current}
+          onChangeCurrent={current === 0 ? checkTaskSetting : setCurrent}
           onClickDone={() => alert("완료")}
+          steps={steps}
         />
       </TimerStepsWrapper>
       <ContentsWrapper>
@@ -80,4 +131,10 @@ const ContentsWrapper = styled.div`
   padding: 25px;
   max-height: 100vh;
   overflow: scroll;
+`
+
+const notificationStyled = css`
+  .ant-notification-notice-icon-info {
+    color: #DA291C !important;
+  }
 `

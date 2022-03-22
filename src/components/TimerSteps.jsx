@@ -1,36 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Steps, Button, message } from "antd";
 
-export default function TimerSteps({ onChangeCurrent, onClickDone }) {
-  const [current, setCurrent] = React.useState(0);
+export default function TimerSteps({ current, onChangeCurrent, onClickDone, steps }) {
 
   const nextStep = () => {
-    setCurrent(current + 1);
     onChangeCurrent(current + 1);
   };
 
   const firstStep = () => {
-    setCurrent(0);
     onChangeCurrent(0);
   };
 
   const { Step } = Steps;
-
-  const steps = [
-    {
-      title: "라벨 설정",
-      description: "진행 작업을 설정합니다",
-    },
-    {
-      title: "버닝 타임",
-      description: "작업에 몰입합니다",
-    },
-    {
-      title: "완료 기록",
-      description: "완료 기록을 보여줍니다",
-    }
-  ];
 
   return (
     <TimerStepsWrapper>

@@ -4,7 +4,6 @@ import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
 import { Steps, Menu, Dropdown, TimePicker } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import moment from "moment";
 
 import Api from "../api";
 import Category from "../models/category";
@@ -16,7 +15,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
   const [category, setCategory] = useState(undefined);
   const [label, setLabel] = useState(undefined);
   const [goalTime, setGoalTime] = useState(undefined);
-  const [current, setCurrent] = useState(1);
+  const [current, setCurrent] = useState(0);
 
   const [categories, setCategories] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -32,7 +31,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
           <Dropdown overlay={makeDropdown(categories, onClickCategory)} trigger={["click"]}>
             <StepButtonWrapper className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               <ButtonContentWrapper>
-                <div>{!category ? "카테고리" : category.name}</div>
+              {!category ? <BeforeSelectionWrapper>select category</BeforeSelectionWrapper> : <div>{category.name}</div>}
                 <div><DownOutlined /></div>
               </ButtonContentWrapper>
             </StepButtonWrapper>
@@ -48,7 +47,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
           <Dropdown overlay={makeDropdown(labels, onClickLabel)} trigger={["click"]}>
             <StepButtonWrapper className="ant-dropdown-link" onClick={e => e.preventDefault()}>
               <ButtonContentWrapper>
-                <div>{!label ? "라벨" : label.name}</div>
+                {!label ? <BeforeSelectionWrapper>select label</BeforeSelectionWrapper> : <div>{label.name}</div>}
                 <div><DownOutlined /></div>
               </ButtonContentWrapper>
             </StepButtonWrapper>
@@ -62,7 +61,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       content: (
         <ContentWrapper grid={"time"}>
           <TimePicker
-            defaultValue={!goalTime ? moment("00:00:00", "HH:mm:ss") : moment(Task.msToTime(goalTime), "HH:mm:ss")}
+            value={goalTime}
             onChange={(moment, timeString) => {
               const ms = Task.timeToMs(timeString);
               setGoalTime(moment);
@@ -135,6 +134,8 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
   function onClickCategory(el) {
     onSelectCategory(el);
     setCategory(el);
+    setLabel(undefined);
+    setGoalTime(undefined);
   }
 
   function onClickLabel(el) {
@@ -230,6 +231,10 @@ const TimePickerStyled = {
   "margin": "5px 0",
   "padding": "5px 10px",
 }
+
+const BeforeSelectionWrapper = styled.div`
+  color: #BEBEBE;
+`
 
 TaskSetting.propTypes = {
   onSelectCategory: PropTypes.func,
