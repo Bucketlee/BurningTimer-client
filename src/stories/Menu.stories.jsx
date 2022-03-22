@@ -11,4 +11,5 @@ const Template = (args) => <Menu {...args} />;
 
 export const MenuSample = Template.bind({});
 MenuSample.args = {
+  onChangeCurrent: (name) => console.log("onChangeCurrent 실행", name),
 };

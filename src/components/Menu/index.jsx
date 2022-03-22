@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { message } from "antd";
 
 import MenuView from "./MenuView";
 
-export default function Menu() {
+export default function Menu({ onChangeCurrent }) {
   const [current, setCurrent] = useState("Label");
 
   function onSelectMenu(name) {
     // menu에 따라 navigate 설정
     setCurrent(name);
+    onChangeCurrent(name);
   }
 
   function logout() {
@@ -25,3 +27,7 @@ export default function Menu() {
     />
   );
 }
+
+Menu.propTypes = {
+  onChangeCurrent: PropTypes.func,
+};

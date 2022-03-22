@@ -2,16 +2,12 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Empty } from "antd";
 
-import Menu from "../Menu";
 import Categories from "../Categories";
 import Labels from "../Labels";
 
 export default function TodoPageView({ onSelectCategory, selectedCategory }) {
   return (
     <TodoPageViewWrapper>
-      <MenuWrapper>
-        <Menu />
-      </MenuWrapper>
       <CategoriesWrapper>
         <Categories onSelect={onSelectCategory} />
       </CategoriesWrapper>
@@ -31,14 +27,9 @@ export default function TodoPageView({ onSelectCategory, selectedCategory }) {
 const TodoPageViewWrapper = styled.section`
   font-family: sans-serif !important;
   display: grid;
-  grid-template-columns: 82px 220px auto;
+  grid-template-columns: 220px auto;
   background-color: #F2F2F2;
   height: 100%;
-`
-
-const MenuWrapper = styled.div`
-  padding: 30px 0;
-  text-align: center;
 `
 
 const CategoriesWrapper = styled.div`

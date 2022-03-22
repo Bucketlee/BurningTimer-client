@@ -72,7 +72,7 @@ const UlWrapper = styled.ul`
 `
 
 const LiWrapper = styled.li`
-  padding: 0 15px;
+  padding-left: 15px;
   display: grid;
   grid-template-columns: auto 35px;
 
@@ -85,10 +85,12 @@ const ButtonWrapper = styled.button`
   padding: 0;
   background: none;
   border: none;
+  max-width: 175px;
   line-height: 40px;
   color: #797978;
   text-align: left;
   font-size: 15px;
+  word-break: break-all;
 
   &:hover {
     color: #27251F;
