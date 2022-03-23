@@ -2,14 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 import { Steps, Button, message } from "antd";
 
-export default function TimerSteps({ current, onChangeCurrent, onClickDone, steps }) {
+export default function TimerSteps({ current, onClickNextStep, onClickFirstStep, onClickReport, steps }) {
 
   const nextStep = () => {
-    onChangeCurrent(current + 1);
+    onClickNextStep(current + 1);
   };
 
   const firstStep = () => {
-    onChangeCurrent(0);
+    onClickFirstStep();
   };
 
   const { Step } = Steps;
@@ -32,11 +32,10 @@ export default function TimerSteps({ current, onChangeCurrent, onClickDone, step
           <Button
             type="primary"
             onClick={() => {
-              message.success("Processing complete!");
-              onClickDone();
+              onClickReport();
             }}
           >
-            완료
+            리포트
           </Button>
         )}
         {current > 0 && (

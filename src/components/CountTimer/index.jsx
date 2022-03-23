@@ -85,12 +85,12 @@ export default function CountTimer({ ms, onTimerStart, onTimerPause, onTimerStop
       onPauseButtonClick={() => {
         timer.pause();
         setIsRunning(false);
-        onTimerPause();
+        onTimerPause(milliseconds);
       }}
       onStopButtonClick={() => {
         timer.stop();
         setIsRunning(false);
-        onTimerStop()
+        onTimerStop(milliseconds);
       }}
     />
   )

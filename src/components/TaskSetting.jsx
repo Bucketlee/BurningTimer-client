@@ -158,12 +158,21 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
 
 const TimePickerPanelStyled = css`
   .ant-picker-panel {
-    width: 300px;
+    width: 300px !important;
 
     .ant-picker-time-panel-cell-inner {
       padding: 0 !important;
-      text-align: center;
+      text-align: center !important;
     }
+  }
+
+  .ant-picker-now-btn {
+    color: #DA291C !important;
+  }
+
+  .ant-btn-primary {
+    background-color: #DA291C !important;
+    border-color: #DA291C !important;
   }
 `
 
