@@ -19,6 +19,17 @@ export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, 
         <Documentation
           title={"Memo"}
           subTitle={"할일 등 무엇이든 자유롭게 메모하세요"}
+          defaultContent={{
+            "blocks": [
+              {
+                  "id": "oUq2g_tl8y",
+                  "type": "paragraph",
+                  "data": {
+                    "text": "클릭하여 메모를 작성할 수 있습니다."
+                  }
+              },
+            ],
+          }}
           onHandleSave={onSaveMemo}
         />
       </DocumentationWrapper>
@@ -26,6 +37,17 @@ export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, 
         <Documentation
           title={"Distraction"}
           subTitle={"딴짓은 이곳에 적어두고 본짓에 집중하세요"}
+          defaultContent={{
+            "blocks": [
+              {
+                  "id": "oUq2g_tl8y",
+                  "type": "paragraph",
+                  "data": {
+                    "text": "클릭하여 딴짓을 작성할 수 있습니다."
+                  }
+              },
+            ],
+          }}
           onHandleSave={onSaveDistraction}
         />
       </DocumentationWrapper>
