@@ -1,13 +1,15 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
-import { notification, Modal } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { notification, Modal, List } from "antd";
+import { ExclamationCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 
+import Api from "../api";
+import Task from "../models/task";
 import TimerSteps from "./TimerSteps";
 import TaskSetting from "./TaskSetting";
 import TimerDisplay from "./TimerDisplay";
-import Task from "../models/task";
+import Result from "./Result";
 
 export default function TimerPage({ onClickReport }) {
   const [current, setCurrent] = useState(0);
@@ -16,11 +18,10 @@ export default function TimerPage({ onClickReport }) {
     return new Task();
   }, []);
 
-  console.log(newTask);
-
   const saveTask = useCallback(async () => {
-    // Task 저장시킴
-    console.log("저장된 Task", newTask);
+    const data = await Api.task.createNewTask(newTask);
+    data ? openNotification("top", "Task를 저장했습니다", "Report에서 자세하게 확인할 수 있습니다", <CheckCircleOutlined />) : openNotification("top", "Task를 저장하지 못했습니다", "잠시 후 다시 시도해주세요");
+    return data;
   }, [newTask]);
 
   const setNewTaskValue = useCallback((key, value) => {
@@ -30,6 +31,21 @@ export default function TimerPage({ onClickReport }) {
     }
 
     newTask[key] = value;
+  }, [newTask]);
+
+  const resetNewTaskValueValue = useCallback(() => {
+    newTask.categoryId = undefined;
+    newTask.userId = undefined;
+    newTask.labelId = undefined;
+    newTask.startTimestamp = undefined;
+    newTask.endTimestamp = undefined;
+    newTask.pauseAndRestarts = [];
+    newTask.goalTime = undefined;
+    newTask.playTime = undefined;
+    newTask.memo = undefined;
+    newTask.distraction = undefined;
+    newTask.createdAt = undefined;
+    newTask.updatedAt = undefined;
   }, [newTask]);
 
   const contents = useMemo(() => {
@@ -56,18 +72,53 @@ export default function TimerPage({ onClickReport }) {
             const clickDate = new Date();
             setNewTaskValue("pauseAndRestarts", [ ...newTask.pauseAndRestarts, clickDate ]);
             setNewTaskValue("endTimestamp", clickDate);
-            saveTask();
-            setCurrent(2);
+
+            const result = saveTask();
+            if (result) setCurrent(2);
           }}
           onSaveMemo={(data) => setNewTaskValue("memo", data)}
           onSaveDistraction={(data) => setNewTaskValue("distraction", data)}
         />
       );
     } else {
-      // Done Page 제작 필요
-      return "Done Page"
+      console.log(newTask.goalTime, newTask.playTime);
+      const percent = Math.round(newTask.playTime/newTask.goalTime*100);
+      const dataSource = [
+        `목표 시간은 [ ${Task.msToTime(newTask.goalTime)} ]입니다.`,
+        `실제 시간은 [ ${Task.msToTime(newTask.playTime)} ]입니다.`,
+      ];
+      const taskResultContent = (
+        <div>
+          <List
+            bordered
+            dataSource={dataSource}
+            renderItem={item => (
+              <List.Item>
+                {item}
+              </List.Item>
+            )}
+          />
+        </div>
+      )
+      return (
+        <ResultWrapper>
+          <Result
+            percent={percent}
+            title={"버닝이 종료되었습니다!"}
+            content={taskResultContent}
+            footer={"충분히 집중하셨다면, 잠시 쉬어가는건 어떨까요?"}
+            okButtonText={"새 타이머"}
+            onClickOkButton={() => {
+              resetNewTaskValueValue();
+              setCurrent(0);
+            }}
+            cancelButtonText={"리포트"}
+            onClickCancelButton={onClickReport}
+          />
+        </ResultWrapper>
+      );
     }
-  }, [current, newTask, setNewTaskValue, saveTask]);
+  }, [current, newTask, setNewTaskValue, saveTask, onClickReport, resetNewTaskValueValue]);
 
   const steps = [
     {
@@ -104,29 +155,15 @@ export default function TimerPage({ onClickReport }) {
     return true;
   }
 
-  function openNotification(placement, title, text) {
+  function openNotification(placement, title, text, icon, duration) {
     return notification.info({
       message: title,
       description: text,
       placement,
-      duration: 2,
+      icon: icon ? icon : <ExclamationCircleOutlined />,
+      duration: duration ? duration : 100,
     });
   };
-
-  const resetNewTaskValueValue = useCallback(() => {
-    newTask.categoryId = undefined;
-    newTask.userId = undefined;
-    newTask.labelId = undefined;
-    newTask.startTimestamp = undefined;
-    newTask.endTimestamp = undefined;
-    newTask.pauseAndRestarts = [];
-    newTask.goalTime = undefined;
-    newTask.playTime = undefined;
-    newTask.memo = undefined;
-    newTask.distraction = undefined;
-    newTask.createdAt = undefined;
-    newTask.updatedAt = undefined;
-  }, [newTask]);
 
   function checkBeforeBackToFirst() {
     if (current === 1 && newTask.startTimestamp) {
@@ -167,8 +204,8 @@ export default function TimerPage({ onClickReport }) {
                 return openNotification("top", "타이머가 진행중입니다", "타이머를 STOP 해주세요");
               }
 
-              saveTask();
-              setCurrent(c);
+              const result = saveTask();
+              if (result) setCurrent(c);
             }
           }
           onClickFirstStep={() => {
@@ -206,7 +243,15 @@ const ContentsWrapper = styled.div`
 `
 
 const notificationStyled = css`
-  .ant-notification-notice-icon-info {
+  .ant-notification-notice-icon {
     color: #DA291C !important;
   }
+`
+
+const ResultWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px;
 `

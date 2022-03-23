@@ -173,6 +173,7 @@ const TimePickerPanelStyled = css`
   .ant-btn-primary {
     background-color: #DA291C !important;
     border-color: #DA291C !important;
+    color: #FFFFFF !important;
   }
 `
 

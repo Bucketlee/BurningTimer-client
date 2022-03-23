@@ -6,7 +6,7 @@ class Task {
     this.labelId = labelId;
     this.startTimestamp = startTimestamp;
     this.endTimestamp = endTimestamp;
-    this.pauseAndRestarts = pauseAndRestarts;
+    this.pauseAndRestarts = !pauseAndRestarts ? [] : pauseAndRestarts;
     this.goalTime = goalTime;
     this.playTime = playTime;
     this.memo = memo;
