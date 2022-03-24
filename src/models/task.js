@@ -101,6 +101,43 @@ class Task {
     const [hrs, mins, secs] = s.split(":");
     return (+secs)*1000 + (+mins)*1000*60 + (+hrs)*1000*60*60;
   }
+
+  static converteTaskEditorJSDataToHTML(data) {
+    const result = [];
+
+    const len = data.blocks.length;
+
+    for (let i = 0; i < len; i += 1) {
+      if (data.blocks[i].type === "paragraph") {
+        const pushData = (<div>{data.blocks[i].data.text}</div>);
+        result.push(pushData);
+      }
+
+      if (data.blocks[i].type === "header") {
+        const pushData = (<h3>{data.blocks[i].data.text}</h3>);
+        result.push(pushData);
+      }
+
+      if (data.blocks[i].type === "checkList") {
+        data.blocks[i].data.items.forEach((item) =>
+          {
+            const pushData = (item.checked ?
+              <div>
+                <input type="checkbox" checked />
+                <span>{item.text}</span>
+              </div> :
+              <div>
+                <input type="checkbox" />
+                <span> {item.text}</span>
+              </div>
+            )
+            result.push(pushData);
+          }
+        )
+      }
+    }
+    return result;
+  }
 };
 
 export default Task;

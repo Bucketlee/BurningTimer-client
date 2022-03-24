@@ -24,8 +24,8 @@ export default function DetailsTable({ tasks }) {
         date: task.startTimestamp.toLocaleDateString(),
         goal: Task.msToTime(+task.goalTime),
         time: Task.msToTime(+task.playTime),
-        memo: task.memo,
-        distraction: task.distraction,
+        memo: task.memo ? Task.converteTaskEditorJSDataToHTML(task.memo) : "",
+        distraction: task.distraction ? Task.converteTaskEditorJSDataToHTML(task.distraction) : "",
       });
     });
     setData(originData);
