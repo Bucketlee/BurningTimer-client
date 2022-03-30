@@ -36,14 +36,14 @@ const CategoriesWrapper = styled.div`
   padding: 30px 0;
   border-left: 1px solid rgba(0,0,0,.08);
   max-height: 100vh;
-  overflow: scroll;
+  overflow: auto;
 `
 
 const LabelsWrapper = styled.div`
   background-color: #FFFFFF;
   padding: 25px;
   max-height: 100vh;
-  overflow: scroll;
+  overflow: auto;
 `
 
 const EmptyWrapper = styled.div`
