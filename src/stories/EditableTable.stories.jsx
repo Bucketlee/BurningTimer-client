@@ -11,7 +11,7 @@ const Template = (args) => <EditableTable {...args} />;
 
 export const EditableTableSample = Template.bind({});
 EditableTableSample.args = {
-  tasks: [
+  data: [
     {
         "_id": "61ddab403c02597c636ae5e7",
         "userId": "61dbefd228da5c1326fbd57a",
