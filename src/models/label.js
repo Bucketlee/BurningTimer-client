@@ -21,9 +21,14 @@ class Label {
     );
   }
 
-  static getLabelId(labelName, labels) {
-    const targetLabel = labels.find(label => label.name === labelName);
-    return targetLabel.labelId;
+  static getLabelByName(labelName, categories) {
+    const targetLabel = categories.find(label => label.name === labelName);
+    return targetLabel;
+  }
+
+  static getLabelById(labelId, categories) {
+    const targetLabel = categories.find(label => label._id === labelId);
+    return targetLabel;
   }
 
   static getLabelsWithCategoryId(labels, categoryId) {

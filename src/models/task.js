@@ -138,6 +138,18 @@ class Task {
     }
     return result;
   }
+
+  static getCategoriesIdFromSelectedTask(tasks) {
+    const result = new Set();
+    tasks.forEach(task => result.add(task.categoryId));
+    return Array.from(result);
+  }
+
+  static getLabelsIdFromSelectedTask(tasks) {
+    const result = new Set();
+    tasks.forEach(task => result.add(task.labelId));
+    return Array.from(result);
+  }
 };
 
 export default Task;

@@ -19,10 +19,16 @@ class Category {
     );
   }
 
-  static getCategoryId(categoryName, categories) {
-    const targetCategory = categories.find(Category => Category.name === categoryName);
-    return targetCategory.CategoryId;
+  static getCategoryByName(categoryName, categories) {
+    const targetCategory = categories.find(category => category.name === categoryName);
+    return targetCategory;
   }
+
+  static getCategoryById(categoryId, categories) {
+    const targetCategory = categories.find(category => category._id === categoryId);
+    return targetCategory;
+  }
+
 
   static getActiveCategories(categories) {
     const activedCategories = [];
