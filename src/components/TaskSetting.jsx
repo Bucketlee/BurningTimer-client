@@ -10,7 +10,6 @@ import Category from "../models/category";
 import Label from "../models/label";
 import Task from "../models/task";
 
-
 export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeChange }) {
   const [category, setCategory] = useState(undefined);
   const [label, setLabel] = useState(undefined);
@@ -145,7 +144,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
 
   return (
     <TaskSettingWrapper>
-      <Global styles={TimePickerPanelStyled}/>
+      <Global styles={TimePickerPanelStyled} />
       <Steps progressDot current={current} direction="vertical" style={{ gridArea: "step"}}>
         {steps.map(item => (
           <Step key={item.title} title={item.title} description={item.description} />

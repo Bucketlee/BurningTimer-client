@@ -72,10 +72,8 @@ export default function Categories({ onSelect }) {
   }
 
   async function addNewCategory(name) {
-    console.log(name);
     if (name !== "") {
       const isIncludesInCategories = Category.findCategoryWithTargetName(categories, name);
-      console.log(isIncludesInCategories);
       if (!isIncludesInCategories) {
         const targetCategory = Category.fromJson({ name: name, priority: categories.length + 1 });
         setCategories([...categories, targetCategory]);

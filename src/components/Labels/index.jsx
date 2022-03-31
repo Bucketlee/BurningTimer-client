@@ -6,7 +6,7 @@ import Label from "../../models/label";
 
 export default function Labels({ category }) {
   const [labels, setLabels] = useState([]);
-  const [grab, setGrab] = useState(null);
+  const [grab, setGrab] = useState(undefined);
   const [newLabel, setNewLabel] = useState("");
 
   const getLabels = useCallback(async (categoryId) => {
@@ -48,7 +48,7 @@ export default function Labels({ category }) {
     }
   }
 
-  async function onDragEnd(e) {
+  async function onDragEnd(e) { // handleDragEnd
     e.dataTransfer.dropEffect = "move";
 
     const grabPosition = getLabelPosition(grab.innerText);
@@ -71,7 +71,7 @@ export default function Labels({ category }) {
     }
   }
 
-  async function addNewLabel(name) {
+  async function addNewLabel(name) { // 옵티미스틱 UI
     if (name !== "") {
       const isIncludesInLabels = Label.findLabelWithTargetName(labels, name);
 
@@ -138,8 +138,8 @@ export default function Labels({ category }) {
       onDragEnter={onDragEnter}
       onDragEnd={onDragEnd}
       onClickContent={onSelectLabel}
-      confirmEdit={editTargetLabel}
-      confirmDelete={deleteTargetLabel}
+      confirmEditOptionPopup={editTargetLabel}
+      confirmDeleteOptionPopup={deleteTargetLabel}
     />
   );
 }

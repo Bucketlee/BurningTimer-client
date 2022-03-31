@@ -45,7 +45,7 @@ export default function LabelsView({
             >
               <ButtonWrapper onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
               <OptionPopup
-                confirmEditO={(value) => confirmEditOptionPopup(name, value)}
+                confirmEdit={(value) => confirmEditOptionPopup(name, value)}
                 confirmDelete={() => confirmDeleteOptionPopup(name)}
               />
             </LiWrapper>

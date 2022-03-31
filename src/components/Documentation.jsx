@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from "react";
+import React, { useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import { createReactEditorJS } from "react-editor-js";
 import Header from "@editorjs/header";
@@ -53,22 +53,15 @@ export default function Documentation({ title, subTitle, defaultContent, onHandl
 
   const handleSave = useCallback(async () => {
     const savedData = await editorCore.current.save();
-    console.log("savedData", savedData);
     onHandleSave(savedData);
   }, [onHandleSave]);
-
-  useEffect(() => {
-    return () => {
-      handleSave();
-    }
-  }, [handleSave]);
 
   return (
     <DocumentationWrapper>
       <TitleWrapper>{title}</TitleWrapper>
       <SubTitleWrapper>{subTitle}</SubTitleWrapper>
       <ContentWrapper>
-        <ReactEditorJS defaultValue={defaultContent ? defaultContent : defaultValue} tools={EDITOR_JS_TOOLS} onInitialize={handleInitialize} />
+        <ReactEditorJS defaultValue={defaultContent ? defaultContent : defaultValue} tools={EDITOR_JS_TOOLS} onInitialize={handleInitialize} onChange={(e) => handleSave(e)} />
       </ContentWrapper>
     </DocumentationWrapper>
   );

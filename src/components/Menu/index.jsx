@@ -4,12 +4,10 @@ import { message } from "antd";
 
 import MenuView from "./MenuView";
 
-export default function Menu({ onChangeCurrent }) {
-  const [current, setCurrent] = useState("Label");
+export default function Menu({ onChangeCurrent, current }) {
 
   function onSelectMenu(name) {
     // menu에 따라 navigate 설정
-    setCurrent(name);
     onChangeCurrent(name);
   }
 

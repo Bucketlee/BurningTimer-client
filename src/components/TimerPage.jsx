@@ -67,28 +67,26 @@ export default function TimerPage({ onClickReport }) {
             setNewTaskValue("pauseAndRestarts", [ ...newTask.pauseAndRestarts, clickDate ]);
             setNewTaskValue("endTimestamp", clickDate);
           }}
-          onTimerStop={(ms) => {
+          onTimerStop={async (ms) => {
             setNewTaskValue("playTime", ms);
             const clickDate = new Date();
             setNewTaskValue("pauseAndRestarts", [ ...newTask.pauseAndRestarts, clickDate ]);
             setNewTaskValue("endTimestamp", clickDate);
 
-            const result = saveTask();
-            if (result) setCurrent(2);
+            await saveTask();
+            setCurrent(2);
           }}
           onSaveMemo={(data) => setNewTaskValue("memo", data)}
           onSaveDistraction={(data) => setNewTaskValue("distraction", data)}
         />
       );
     } else {
-      console.log(newTask.goalTime, newTask.playTime);
       const percent = Math.round(newTask.playTime/newTask.goalTime*100);
       const dataSource = [
         `목표 시간은 [ ${Task.msToTime(newTask.goalTime)} ]입니다.`,
         `실제 시간은 [ ${Task.msToTime(newTask.playTime)} ]입니다.`,
       ];
       const taskResultContent = (
-        <div>
           <List
             bordered
             dataSource={dataSource}
@@ -98,7 +96,6 @@ export default function TimerPage({ onClickReport }) {
               </List.Item>
             )}
           />
-        </div>
       )
       return (
         <ResultWrapper>
@@ -195,7 +192,7 @@ export default function TimerPage({ onClickReport }) {
             current === 0 ? ((c) => {
               const isCorrect = correctTaskSetting();
               if (isCorrect) setCurrent(c);
-            }) : (c) => {
+            }) : async (c) => {
               if (!newTask.startTimestamp) {
                 return openNotification("top", "타이머를 시작하지 않았습니다.", "START를 눌러 타이머를 시작해주세요.");
               }
@@ -204,8 +201,8 @@ export default function TimerPage({ onClickReport }) {
                 return openNotification("top", "타이머가 진행중입니다", "타이머를 STOP 해주세요");
               }
 
-              const result = saveTask();
-              if (result) setCurrent(c);
+              await saveTask();
+              setCurrent(c);
             }
           }
           onClickFirstStep={() => {
