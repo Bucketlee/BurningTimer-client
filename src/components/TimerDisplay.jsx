@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import PropTypes from "prop-types";
 
@@ -6,6 +6,8 @@ import CountTimer from "./CountTimer";
 import Documentation from "./Documentation";
 
 export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, onSaveMemo, onSaveDistraction  }) {
+  const [selectedDocumentation, setSelectedDocumentation] = useState(undefined);
+
   return(
     <TimerDisplayWrapper>
       <CountTimerWrapper>
@@ -15,7 +17,7 @@ export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, 
           onTimerStop={onTimerStop}
         />
       </CountTimerWrapper>
-      <DocumentationWrapper>
+      <DocumentationWrapper selected={selectedDocumentation === "memo"}>
         <Documentation
           title={"Memo"}
           subTitle={"할일 등 무엇이든 자유롭게 메모하세요"}
@@ -31,9 +33,10 @@ export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, 
             ],
           }}
           onHandleSave={onSaveMemo}
+          onClickEditor={() => setSelectedDocumentation("memo")}
         />
       </DocumentationWrapper>
-      <DocumentationWrapper>
+      <DocumentationWrapper selected={selectedDocumentation === "distraction"}>
         <Documentation
           title={"Distraction"}
           subTitle={"딴짓은 이곳에 적어두고 본짓에 집중하세요"}
@@ -49,6 +52,7 @@ export default function TimerDisplay({ onTimerStart, onTimerPause, onTimerStop, 
             ],
           }}
           onHandleSave={onSaveDistraction}
+          onClickEditor={() => setSelectedDocumentation("distraction")}
         />
       </DocumentationWrapper>
     </TimerDisplayWrapper>
@@ -72,9 +76,7 @@ const DocumentationWrapper = styled.div`
   padding: 30px;
   border-left: 1px solid #F2F2F2;
 
-  &:focus-within {
-    min-width: 400px;
-  }
+  min-width: ${props => props.selected ? "400px" : "auto"}
 `
 
 TimerDisplay.propTypes = {

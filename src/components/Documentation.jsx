@@ -44,7 +44,7 @@ const defaultValue = {
   }
 }
 
-export default function Documentation({ title, subTitle, defaultContent, onHandleSave }) {
+export default function Documentation({ title, subTitle, defaultContent, onHandleSave, onClickEditor }) {
   const editorCore = useRef(null);
 
   const handleInitialize = useCallback(async (instance) => {
@@ -60,7 +60,7 @@ export default function Documentation({ title, subTitle, defaultContent, onHandl
     <DocumentationWrapper>
       <TitleWrapper>{title}</TitleWrapper>
       <SubTitleWrapper>{subTitle}</SubTitleWrapper>
-      <ContentWrapper>
+      <ContentWrapper onClick={() => onClickEditor()}>
         <ReactEditorJS defaultValue={defaultContent ? defaultContent : defaultValue} tools={EDITOR_JS_TOOLS} onInitialize={handleInitialize} onChange={(e) => handleSave(e)} />
       </ContentWrapper>
     </DocumentationWrapper>
@@ -84,9 +84,13 @@ const SubTitleWrapper = styled.h3`
   color: #797978;
 `
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.button`
   border-top: 1px solid #F2F2F2;
   padding: 5px;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
 
   .codex-editor__redactor {
     padding-bottom: 0 !important;
