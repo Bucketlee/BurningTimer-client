@@ -7,6 +7,7 @@ import { openNotification } from "../antdCustom";
 
 export default function Categories({ onSelect }) {
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(undefined);
   const [grab, setGrab] = useState(undefined);
   const [newCategory, setNewCategory] = useState("");
 
@@ -113,6 +114,7 @@ export default function Categories({ onSelect }) {
   function onSelectCategory(name) {
     for (let i = 0; i < categories.length; i += 1) {
       if (categories[i].name === name) {
+        setSelectedCategory(categories[i]);
         onSelect(categories[i]);
         return;
       }
@@ -169,6 +171,7 @@ export default function Categories({ onSelect }) {
   return (
     <CategoriesView
       contents={categories.map(category => category.name)}
+      selectedContent={selectedCategory ? selectedCategory.name : undefined}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
       onDragEnter={handleDragEnter}

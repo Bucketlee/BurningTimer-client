@@ -7,6 +7,7 @@ import OptionPopup from "../OptionPopover";
 
 export default function CategoriesView({
   contents,
+  selectedContent,
   onDragOver,
   onDragStart,
   onDragEnter,
@@ -33,7 +34,7 @@ export default function CategoriesView({
               onDragEnter={(e) => onDragEnter(e)}
               onDragEnd={(e) => onDragEnd(e)}
             >
-              <ButtonWrapper onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
+              <ButtonWrapper selected={selectedContent === name ? true : false} onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
               <OptionPopup
                 confirmEdit={(value) => confirmEditOptionPopup(name, value)}
                 confirmDelete={() => confirmDeleteOptionPopup(name)}
@@ -87,17 +88,13 @@ const ButtonWrapper = styled.button`
   border: none;
   max-width: 175px;
   line-height: 40px;
-  color: #797978;
+  color: ${props => props.selected ? "#27251F" : "#797978"};
+  font-weight: ${props => props.selected ? "600" : "400" };
   text-align: left;
   font-size: 15px;
   word-break: break-all;
 
   &:hover {
-    color: #27251F;
-    font-weight: 600;
-  }
-
-  &:focus {
     color: #27251F;
     font-weight: 600;
   }
