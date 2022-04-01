@@ -1,11 +1,9 @@
-import React, { useRef, useCallback } from "react";
+import React, { useMemo, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import { createReactEditorJS } from "react-editor-js";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import CheckList from "@editorjs/checklist";
-
-const ReactEditorJS = createReactEditorJS();
 
 const EDITOR_JS_TOOLS = {
   header: {
@@ -46,6 +44,11 @@ const defaultValue = {
 
 export default function Documentation({ title, subTitle, defaultContent, onHandleSave, onClickEditor }) {
   const editorCore = useRef(null);
+
+  const ReactEditorJS = useMemo(
+    () => createReactEditorJS(),
+    [],
+  );
 
   const handleInitialize = useCallback(async (instance) => {
     editorCore.current = instance;
