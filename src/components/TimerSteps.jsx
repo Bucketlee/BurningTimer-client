@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { Steps, Button, message } from "antd";
+import { Steps, Button } from "antd";
 
 export default function TimerSteps({ current, onClickNextStep, onClickFirstStep, onClickReport, steps }) {
 

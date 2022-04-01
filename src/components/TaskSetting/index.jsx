@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "@emotion/styled";
-import { Global, css } from "@emotion/react";
-import { Steps, Menu, Dropdown, TimePicker } from "antd";
+import { Menu, Dropdown, TimePicker } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
-import Api from "../api";
-import Category from "../models/category";
-import Label from "../models/label";
-import Task from "../models/task";
-import { openNotification } from "./antdCustom";
+import Api from "../../api";
+import Category from "../../models/category";
+import Label from "../../models/label";
+import Task from "../../models/task";
+import { openNotification } from "../antdCustom";
+import TaskSettingView from "./TaskSettingView";
 
 export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeChange }) {
   const [category, setCategory] = useState(undefined);
@@ -19,8 +19,6 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
 
   const [categories, setCategories] = useState([]);
   const [labels, setLabels] = useState([]);
-
-  const { Step } = Steps;
 
   const steps = [
     {
@@ -153,65 +151,12 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
   }
 
   return (
-    <TaskSettingWrapper>
-      <Global styles={TimePickerPanelStyled} />
-      <Steps progressDot current={current} direction="vertical" style={{ gridArea: "step"}}>
-        {steps.map(item => (
-          <Step title={item.title} description={item.description} />
-        ))}
-      </Steps>
-      {steps.map(step => step.content)}
-    </TaskSettingWrapper>
+    <TaskSettingView
+      current={current}
+      steps={steps}
+    />
   );
 }
-
-const TimePickerPanelStyled = css`
-  .ant-picker-panel {
-    width: 300px !important;
-
-    .ant-picker-time-panel-cell-inner {
-      padding: 0 !important;
-      text-align: center !important;
-    }
-  }
-
-  .ant-picker-now-btn {
-    color: #DA291C !important;
-  }
-
-  .ant-btn-primary {
-    background-color: #DA291C !important;
-    border-color: #DA291C !important;
-    color: #FFFFFF !important;
-  }
-`
-
-const TaskSettingWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 200px auto;
-  grid-template-rows: 100px 100px 100px;
-  grid-template-areas:
-    "step category"
-    "step label"
-    "step time"
-  ;
-
-  .ant-steps-item-finish {
-    .ant-steps-icon-dot {
-      background-color: #DA291C !important;
-    }
-
-    .ant-steps-item-tail::after {
-      background-color: #DA291C !important;
-    }
-  }
-
-  .ant-steps-item-active {
-    .ant-steps-icon-dot {
-      background-color: #DA291C !important;
-    }
-  }
-`
 
 const StepButtonWrapper = styled.button`
   margin: 5px 0;
