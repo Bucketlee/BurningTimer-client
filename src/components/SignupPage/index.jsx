@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import Api from "../../api";
 import SignUpPageView from "./SignupPageView";
@@ -10,6 +11,8 @@ export default function SignupPage() {
   const [password, setPassword] = useState(undefined);
   const [passwordCheck, setPasswordCheck] = useState(undefined);
   const [email, setEmail] = useState(undefined);
+
+  const navigate = useNavigate();
 
   async function signupMembership() {
     try {
@@ -33,9 +36,9 @@ export default function SignupPage() {
         return;
       }
 
-
       await Api.auth.signUp(username.toLowerCase(), password, email);
       openNotification("top", "Burning Timer 멤버가 되셨습니다.", `${username}님의 인생에 의미있는 역할을 할 수 있기를 희망합니다.`, <CheckCircleOutlined style={{ color: "#27251F" }} />);
+      navigate("/auth/login");
     } catch (err) {
       if (err.response && err.response.data.message === "ID's already exists") {
         openNotification("top", "아이디가 이미 존재합니다.");

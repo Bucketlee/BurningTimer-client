@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,12 @@ export default function LoginPage() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/app");
+    }
+  }, [navigate]);
+
   async function login() {
     try {
       if (!username) {
@@ -23,6 +29,7 @@ export default function LoginPage() {
       }
       await Api.auth.login(username.toLowerCase(), password);
       openNotification("top", "로그인 되셨습니다.", "", <CheckCircleOutlined style={{ color: "#27251F" }} />);
+      navigate("/auth/login");
     } catch (err) {
       if (err.response && err.response.data.message === "Please, Check your ID") {
         openNotification("top", "아이디가 존재하지 않습니다.");
