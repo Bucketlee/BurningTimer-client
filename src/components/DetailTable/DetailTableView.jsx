@@ -7,13 +7,12 @@ import "antd/dist/antd.min.css";
 export default function DetailTableView({ dataSource, columns }) {
   return (
     <DetailTableViewWrapper>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} scroll={{ y: "60vh" }} />
     </DetailTableViewWrapper>
   );
 }
 
 const DetailTableViewWrapper = styled.div`
-
 `
 
 DetailTableView.propTypes = {

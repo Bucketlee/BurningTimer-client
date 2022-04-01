@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import Api from "../../api";
 import LoginPageView from "./LoginPageView";
@@ -8,6 +9,8 @@ import { openNotification } from "../antdCustom";
 export default function LoginPage() {
   const [username, setUsername] = useState(undefined);
   const [password, setPassword] = useState(undefined);
+
+  const navigate = useNavigate();
 
   async function login() {
     try {
@@ -59,9 +62,9 @@ export default function LoginPage() {
       onPasswordChange={setPassword}
       onKeyPress={onKeyPressEnter}
       onSubmitForm={login}
-      onClickSignup={() => {}}
-      onClickFindId={() => {}}
-      onClickFindPassword={() => {}}
+      onClickSignup={() => navigate("/auth/signup")}
+      onClickFindId={() => {openNotification("top", "준비중인 기능입니다.")}}
+      onClickFindPassword={() => {openNotification("top", "준비중인 기능입니다.")}}
       onSocialLogin={loginWithSocial}
     />
   );

@@ -57,7 +57,7 @@ export default function LoginPageView({
 }
 
 const LoginPageViewWrapper = styled.section`
-  height: 100%;
+  height: 100vh;
   display: grid;
   grid-template-rows: 45px auto;
 `

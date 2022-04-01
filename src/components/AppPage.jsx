@@ -1,30 +1,34 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import styled from "@emotion/styled";
+import { useNavigate, useParams } from "react-router-dom";
 
 import Menu from "./Menu";
 import TodoPage from "./TodoPage";
 import TimerPage from "./TimerPage";
 import ReportPage from "./ReportPage";
+import NotFound from "./NotFound";
 
 export default function AppPage() {
-  const [pageName, setPageName] = useState("Label");
+  const { page } = useParams();
+  const navigate = useNavigate();
 
   const contents = useMemo(() => {
-    if (pageName === "Label") {
+    if (page === "label" || page === undefined) {
       return <TodoPage />;
-    } else if (pageName === "Timer") {
-      return <TimerPage onClickReport={() => setPageName("Report")} />;
-    } else if (pageName === "Report") {
+    } else if (page === "timer") {
+      return <TimerPage onClickReport={() => navigate("/app/report")} />;
+    } else if (page === "report") {
       return <ReportPage />;
+    } else {
+      return <NotFound />
     }
-  }, [pageName]);
+  }, [page, navigate]);
 
   return (
     <AppPageWrapper>
       <MenuWrapper>
         <Menu
-          onChangeCurrent={setPageName}
-          current={pageName}
+          current={page === "timer" ? 1 : (page === "report" ? 2 : 0)}
         />
       </MenuWrapper>
       <ContentsWrapper>
@@ -38,7 +42,7 @@ const AppPageWrapper = styled.section`
   display: grid;
   grid-template-columns: 82px auto;
   background-color: #F2F2F2;
-  height: 100%;
+  height: 100vh;
 `
 
 const MenuWrapper = styled.div`

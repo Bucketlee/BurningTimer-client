@@ -6,7 +6,7 @@ import CategoriesView from "./CategoriesView";
 
 export default function Categories({ onSelect }) {
   const [categories, setCategories] = useState([]);
-  const [grab, setGrab] = useState(null);
+  const [grab, setGrab] = useState(undefined);
   const [newCategory, setNewCategory] = useState("");
 
   const getCategories = useCallback(async () => {
@@ -27,17 +27,17 @@ export default function Categories({ onSelect }) {
     getCategories();
   }, [getCategories]);
 
-  function onDragOver(e) {
+  function handleDragOver(e) {
     e.preventDefault();
   }
 
-  function onDragStart(e) {
+  function handleDragStart(e) {
     setGrab(e.target);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/html", e.target);
   }
 
-  function onDragEnter(e) {
+  function handleDragEnter(e) {
     const grabPosition = getCategoryPosition(grab.innerText);
     const targetPosition = getCategoryPosition(e.target.innerText);
 
@@ -48,7 +48,7 @@ export default function Categories({ onSelect }) {
     }
   }
 
-  async function onDragEnd(e) {
+  async function handleDragEnd(e) {
     e.dataTransfer.dropEffect = "move";
 
     const grabPosition = getCategoryPosition(grab.innerText);
@@ -132,10 +132,10 @@ export default function Categories({ onSelect }) {
   return (
     <CategoriesView
       contents={categories.map(category => category.name)}
-      onDragOver={onDragOver}
-      onDragStart={onDragStart}
-      onDragEnter={onDragEnter}
-      onDragEnd={onDragEnd}
+      onDragOver={handleDragOver}
+      onDragStart={handleDragStart}
+      onDragEnter={handleDragEnter}
+      onDragEnd={handleDragEnd}
       onClickContent={onSelectCategory}
       confirmEditOptionPopup={editTargetCategory}
       confirmDeleteOptionPopup={deleteTargetCategory}

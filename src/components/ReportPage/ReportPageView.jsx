@@ -48,7 +48,9 @@ export default function ReportPageView({
 const ReportPageViewWrapper = styled.section`
   padding: 25px;
   background-color: #FFFFFF;
-  height: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 50px 95px auto;
 `
 
 const TitleWrapper = styled.h2`
@@ -64,6 +66,7 @@ const DateWrapper = styled.div`
 const ContentsWrapper = styled.div`
   display: grid;
   grid-template-columns: 400px auto;
+  grid-template-rows: 250px auto;
   grid-template-areas:
   "label details"
   "graph details";
@@ -81,7 +84,6 @@ const ReportGraphWrapper = styled.div`
 
 const ReportDetailsWrapper = styled.div`
   grid-area: details;
-  height: 300px;
 `
 
 ReportPageView.propTypes = {

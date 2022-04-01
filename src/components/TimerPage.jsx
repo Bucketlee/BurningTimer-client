@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
-import { notification, Modal, List } from "antd";
+import { Modal, List } from "antd";
 import { ExclamationCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 
 import Api from "../api";
@@ -10,6 +10,7 @@ import TimerSteps from "./TimerSteps";
 import TaskSetting from "./TaskSetting";
 import TimerDisplay from "./TimerDisplay";
 import Result from "./Result";
+import { openNotification } from "./antdCustom";
 
 export default function TimerPage({ onClickReport }) {
   const [current, setCurrent] = useState(0);
@@ -151,16 +152,6 @@ export default function TimerPage({ onClickReport }) {
 
     return true;
   }
-
-  function openNotification(placement, title, text, icon, duration) {
-    return notification.info({
-      message: title,
-      description: text,
-      placement,
-      icon: icon ? icon : <ExclamationCircleOutlined />,
-      duration: duration ? duration : 100,
-    });
-  };
 
   function checkBeforeBackToFirst() {
     if (current === 1 && newTask.startTimestamp) {

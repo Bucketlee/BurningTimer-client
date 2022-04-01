@@ -1,11 +1,14 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
       <HeaderWrapper>
         <LogoWrapper className="logo">
-          <LogoImg alt="logo" src={"/image/logo.png"}></LogoImg>
+          <Link to="/">
+            <LogoImg alt="logo" src={"/image/logo.png"}></LogoImg>
+          </Link>
         </LogoWrapper>
       </HeaderWrapper>
   );

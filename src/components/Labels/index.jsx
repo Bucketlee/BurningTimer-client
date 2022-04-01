@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Api from "../../api";
 import LabelsView from "./LabelsView";
 import Label from "../../models/label";
+import { openNotification } from "../antdCustom";
 
 export default function Labels({ category }) {
   const [labels, setLabels] = useState([]);
@@ -27,17 +28,17 @@ export default function Labels({ category }) {
     getLabels(category._id);
   }, [getLabels, category]);
 
-  function onDragOver(e) {
+  function handleDragOver(e) {
     e.preventDefault();
   }
 
-  function onDragStart(e) {
+  function handleDragStart(e) {
     setGrab(e.target);
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/html", e.target);
   }
 
-  function onDragEnter(e) {
+  function handleDragEnter(e) {
     const grabPosition = getLabelPosition(grab.innerText);
     const targetPosition = getLabelPosition(e.target.innerText);
 
@@ -48,7 +49,7 @@ export default function Labels({ category }) {
     }
   }
 
-  async function onDragEnd(e) { // handleDragEnd
+  async function handleDragEnd(e) { // handleDragEnd
     e.dataTransfer.dropEffect = "move";
 
     const grabPosition = getLabelPosition(grab.innerText);
@@ -83,7 +84,7 @@ export default function Labels({ category }) {
         getLabels(category._id);
         setNewLabel("");
       } else {
-        alert("이미 라벨이 있음");
+        openNotification("top", "이미 라벨이 있습니다.");
       }
     }
   }
@@ -101,10 +102,9 @@ export default function Labels({ category }) {
     }
     try {
       await Api.label.updateLabel(targetLabel, newName, targetLabel.priority);
-      // 오류 컨트롤 필요
       getLabels(category._id);
     } catch (err) {
-      alert("문제가 있음");
+      // 오류 컨트롤 필요
     }
   }
 
@@ -133,10 +133,10 @@ export default function Labels({ category }) {
       onPressEnterAddList={addNewLabel}
       onPressEscapeAddList={() => setNewLabel("")}
       AddListValue={newLabel}
-      onDragOver={onDragOver}
-      onDragStart={onDragStart}
-      onDragEnter={onDragEnter}
-      onDragEnd={onDragEnd}
+      onDragOver={handleDragOver}
+      onDragStart={handleDragStart}
+      onDragEnter={handleDragEnter}
+      onDragEnd={handleDragEnd}
       onClickContent={onSelectLabel}
       confirmEditOptionPopup={editTargetLabel}
       confirmDeleteOptionPopup={deleteTargetLabel}

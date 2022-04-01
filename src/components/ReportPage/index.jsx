@@ -1,11 +1,17 @@
-import React, { useEffect, useCallback, useMemo, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 
 import Api from "../../api";
 import Task from "../../models/task";
 import ReportPageView from "./ReportPageView";
 
+const standardDate = new Date();
+const year = standardDate.getFullYear();
+const month = standardDate.getMonth() + 1;
+const day = standardDate.getDate();
+const currentDate = `${year}-${month}-${day}`
+
 export default function ReportPage() {
-  const [selectedDate, setSelectedDate] = useState([Date(), Date()]);
+  const [selectedDate, setSelectedDate] = useState([currentDate, currentDate]);
   const [tasks, setTasks] = useState([]);
 
   function getPeriodDays(startDate, endDate) {
