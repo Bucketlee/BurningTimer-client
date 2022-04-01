@@ -8,11 +8,26 @@ export default function MainPage() {
   const navigate = useNavigate();
 
   const buttons = (
-    <div>
-      <HeaderButtonWrapper onClick={() => navigate("/auth/signup")}>Sign Up</HeaderButtonWrapper>
-      <HeaderButtonWrapper onClick={() => navigate("/auth/login")}>Login</HeaderButtonWrapper>
-    </div>
-  )
+    localStorage.getItem("token") ? (
+      <div>
+        <HeaderButtonWrapper onClick={() => navigate("/app")}>App</HeaderButtonWrapper>
+        <HeaderButtonWrapper
+          onClick={() => {
+            localStorage.setItem("token", "");
+            navigate("/auth/login");
+          }}
+        >
+          Logout
+        </HeaderButtonWrapper>
+      </div>
+    ) : (
+      <div>
+        <HeaderButtonWrapper onClick={() => navigate("/auth/signup")}>Sign Up</HeaderButtonWrapper>
+        <HeaderButtonWrapper onClick={() => navigate("/auth/login")}>Login</HeaderButtonWrapper>
+      </div>
+    )
+  );
+
   return (
     <MainPageWrapper>
       <Header buttons={buttons}></Header>
