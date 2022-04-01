@@ -94,7 +94,6 @@ const ButtonWrapper = styled.button`
   padding: 0;
   background: none;
   border: none;
-  line-height: 40px;
   color: #797978;
   text-align: left;
   font-size: 14px;

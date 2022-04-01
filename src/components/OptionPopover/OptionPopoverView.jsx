@@ -41,6 +41,7 @@ const ButtonWrapper = styled.button`
   padding: 0;
   border: none;
   background: none;
+  height: 100%;
 `
 
 const PopoverContentWrapper = styled.div`

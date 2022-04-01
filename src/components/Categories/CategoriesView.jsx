@@ -73,7 +73,7 @@ const UlWrapper = styled.ul`
 `
 
 const LiWrapper = styled.li`
-  padding-left: 15px;
+  padding: 5px 0 5px 15px;
   display: grid;
   grid-template-columns: auto 35px;
 
@@ -87,7 +87,6 @@ const ButtonWrapper = styled.button`
   background: none;
   border: none;
   max-width: 175px;
-  line-height: 40px;
   color: ${props => props.selected ? "#27251F" : "#797978"};
   font-weight: ${props => props.selected ? "600" : "400" };
   text-align: left;

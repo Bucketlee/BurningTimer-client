@@ -46,7 +46,7 @@ export default function Labels({ category }) {
     const grabPosition = getLabelPosition(grab.innerText);
     const targetPosition = getLabelPosition(e.target.innerText);
 
-    if (targetPosition !== -1) {
+    if (targetPosition !== undefined) {
       const newLabels = [...labels];
       newLabels[grabPosition] = newLabels.splice(targetPosition, 1, newLabels[grabPosition])[0];
       setLabels(newLabels);
@@ -60,7 +60,7 @@ export default function Labels({ category }) {
       const grabPosition = getLabelPosition(grab.innerText);
       const targetPosition = getLabelPosition(e.target.innerText);
 
-      if (targetPosition !== -1) {
+      if (targetPosition !== undefined && targetPosition !== grabPosition) {
         const grabbing = labels[grabPosition];
         await Api.label.updateLabel(grabbing, grabbing.name, targetPosition + 1);
         getLabels(category._id);

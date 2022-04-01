@@ -47,7 +47,7 @@ export default function Categories({ onSelect }) {
     const grabPosition = getCategoryPosition(grab.innerText);
     const targetPosition = getCategoryPosition(e.target.innerText);
 
-    if (targetPosition !== -1) {
+    if (targetPosition !== undefined) {
       const newCategories = [ ...categories ];
       newCategories[grabPosition] = newCategories.splice(targetPosition, 1, newCategories[grabPosition])[0];
       setCategories(newCategories);
@@ -61,7 +61,7 @@ export default function Categories({ onSelect }) {
       const grabPosition = getCategoryPosition(grab.innerText);
       const targetPosition = getCategoryPosition(e.target.innerText);
 
-      if (targetPosition !== -1) {
+      if (targetPosition !== undefined && targetPosition !== grabPosition) {
         const grabbing = categories[grabPosition];
         await Api.category.updateCategory(grabbing, grabbing.name, targetPosition + 1);
         getCategories();
