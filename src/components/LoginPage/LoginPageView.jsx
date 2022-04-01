@@ -28,6 +28,7 @@ export default function LoginPageView({
             name="username"
             onChange={(e) => onUserNameChange(e.target.value)}
             onKeyPress={(e) => onKeyPress(e)}
+            autoComplete={"off"}
           />
           <div>비밀번호</div>
           <InputWrapper
@@ -35,6 +36,7 @@ export default function LoginPageView({
             name="password"
             onChange={(e) => onPasswordChange(e.target.value)}
             onKeyPress={(e) => onKeyPress(e)}
+            autoComplete={"new-password"}
           />
         </FormWrapper>
         <AuthButton

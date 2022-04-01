@@ -25,6 +25,7 @@ export default function SignupPageView({
             name="username"
             onChange={(e) => onUserNameChange(e.target.value)}
             onKeyPress={(e) => onKeyPress(e)}
+            autoComplete={"off"}
           />
           <div>비밀번호</div>
           <InputWrapper
@@ -32,6 +33,7 @@ export default function SignupPageView({
             name="password"
             onChange={(e) => onPasswordChange(e.target.value)}
             onKeyPress={(e) => onKeyPress(e)}
+            autoComplete={"new-password"}
           />
           <div>비밀번호 확인</div>
           <InputWrapper
@@ -39,6 +41,7 @@ export default function SignupPageView({
             name="passwordcheck"
             onChange={(e) => onPasswordCheckChange(e.target.value)}
             onKeyPress={(e) => onKeyPress(e)}
+            autoComplete={"new-password"}
           />
           <div>이메일</div>
           <InputWrapper
