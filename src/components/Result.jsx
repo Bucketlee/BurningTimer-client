@@ -83,7 +83,7 @@ const ButtonWrapper = styled.button`
 Result.propTypes = {
   percent: PropTypes.number,
   title: PropTypes.string,
-  content: PropTypes.string,
+  content: PropTypes.object,
   footer: PropTypes.string,
   okButtonText: PropTypes.string,
   onClickOkButton: PropTypes.func,
