@@ -9,6 +9,7 @@ import Api from "../api";
 import Category from "../models/category";
 import Label from "../models/label";
 import Task from "../models/task";
+import { openNotification } from "./antdCustom";
 
 export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeChange }) {
   const [category, setCategory] = useState(undefined);
@@ -86,7 +87,11 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
         setCategories(sortedCategories);
       }
     } catch(err) {
-      // 오류 컨트롤 필요
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }, []);
 
@@ -102,7 +107,11 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
         }
       }
     } catch(err) {
-      // 오류 컨트롤 필요
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }, [category]);
 

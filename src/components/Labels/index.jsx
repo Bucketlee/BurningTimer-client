@@ -20,7 +20,11 @@ export default function Labels({ category }) {
         setLabels(sortedLabels);
       }
     } catch(err) {
-      // 오류 컨트롤 필요
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }, []);
 
@@ -49,18 +53,27 @@ export default function Labels({ category }) {
     }
   }
 
-  async function handleDragEnd(e) { // handleDragEnd
-    e.dataTransfer.dropEffect = "move";
+  async function handleDragEnd(e) {
+    try {
+      e.dataTransfer.dropEffect = "move";
 
-    const grabPosition = getLabelPosition(grab.innerText);
-    const targetPosition = getLabelPosition(e.target.innerText);
+      const grabPosition = getLabelPosition(grab.innerText);
+      const targetPosition = getLabelPosition(e.target.innerText);
 
-    if (targetPosition !== -1) {
-      const grabbing = labels[grabPosition];
-      await Api.label.updateLabel(grabbing, grabbing.name, targetPosition + 1);
-      // 오류 컨트롤 필요
-      getLabels(category._id);
-      setGrab(null);
+      if (targetPosition !== -1) {
+        const grabbing = labels[grabPosition];
+        await Api.label.updateLabel(grabbing, grabbing.name, targetPosition + 1);
+        getLabels(category._id);
+        setGrab(null);
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "라벨 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }
 
@@ -72,19 +85,28 @@ export default function Labels({ category }) {
     }
   }
 
-  async function addNewLabel(name) { // 옵티미스틱 UI
-    if (name !== "") {
-      const isIncludesInLabels = Label.findLabelWithTargetName(labels, name);
+  async function addNewLabel(name) {
+    try {
+      if (name !== "") {
+        const isIncludesInLabels = Label.findLabelWithTargetName(labels, name);
 
-      if (!isIncludesInLabels) {
-        const targetLabel = Label.fromJson({ name: name, priority: labels.length + 1 });
-        setLabels([...labels, targetLabel]);
-        await Api.label.createNewLabel(category._id, targetLabel.name, targetLabel.priority);
-        // 오류 컨트롤 필요
-        getLabels(category._id);
-        setNewLabel("");
+        if (!isIncludesInLabels) {
+          const targetLabel = Label.fromJson({ name: name, priority: labels.length + 1 });
+          setLabels([...labels, targetLabel]);
+          await Api.label.createNewLabel(category._id, targetLabel.name, targetLabel.priority);
+          getLabels(category._id);
+          setNewLabel("");
+        } else {
+          openNotification("top", "이미 라벨이 있습니다.");
+        }
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "라벨 생성에 실패했습니다.", "라벨 정보가 올바르지 않습니다.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
-        openNotification("top", "이미 라벨이 있습니다.");
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
   }
@@ -104,7 +126,13 @@ export default function Labels({ category }) {
       await Api.label.updateLabel(targetLabel, newName, targetLabel.priority);
       getLabels(category._id);
     } catch (err) {
-      // 오류 컨트롤 필요
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "라벨 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }
 
@@ -120,9 +148,18 @@ export default function Labels({ category }) {
       }
     }
 
-    setLabels(newLabels);
-    await Api.label.deleteLabel(targetLabel);
-    // 오류 컨트롤 필요
+    try {
+      setLabels(newLabels);
+      await Api.label.deleteLabel(targetLabel);
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "라벨 삭제에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
+    }
   }
 
   return (

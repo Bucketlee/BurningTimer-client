@@ -91,19 +91,34 @@ export default function DetailTable({ data, selectedDate }) {
   }
 
   async function selectCategoriesFromTask(tasks) {
-    const selectedCategoriesId = Task.getCategoriesIdFromSelectedTask(tasks);
-    const categories = await Api.category.getAllCategories();
-    const selectedCategories = selectedCategoriesId.map(id => Category.getCategoryById(id, categories));
-    return selectedCategories;
+    try {
+      const selectedCategoriesId = Task.getCategoriesIdFromSelectedTask(tasks);
+      const categories = await Api.category.getAllCategories();
+      const selectedCategories = selectedCategoriesId.map(id => Category.getCategoryById(id, categories));
+      return selectedCategories;
+    } catch (err) {
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
+    }
   }
 
 
   async function selectLabelsFromTask(tasks) {
-    const selectedLabelsId = Task.getLabelsIdFromSelectedTask(tasks);
-    const labels = await Api.label.getAllLabels();
-    const selectedLabels = selectedLabelsId.map(id => Label.getLabelById(id, labels));
-
-    return selectedLabels;
+    try {
+      const selectedLabelsId = Task.getLabelsIdFromSelectedTask(tasks);
+      const labels = await Api.label.getAllLabels();
+      const selectedLabels = selectedLabelsId.map(id => Label.getLabelById(id, labels));
+      return selectedLabels;
+    } catch (err) {
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
+    }
   }
 
   const makeTableData = useCallback(async () => {

@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Api from "../../api";
 import Category from "../../models/category";
 import CategoriesView from "./CategoriesView";
+import { openNotification } from "../antdCustom";
 
 export default function Categories({ onSelect }) {
   const [categories, setCategories] = useState([]);
@@ -19,7 +20,11 @@ export default function Categories({ onSelect }) {
         setCategories(sortedCategories);
       }
     } catch(err) {
-      // 오류 컨트롤 필요
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }, []);
 
@@ -49,17 +54,26 @@ export default function Categories({ onSelect }) {
   }
 
   async function handleDragEnd(e) {
-    e.dataTransfer.dropEffect = "move";
+    try {
+      e.dataTransfer.dropEffect = "move";
 
-    const grabPosition = getCategoryPosition(grab.innerText);
-    const targetPosition = getCategoryPosition(e.target.innerText);
+      const grabPosition = getCategoryPosition(grab.innerText);
+      const targetPosition = getCategoryPosition(e.target.innerText);
 
-    if (targetPosition !== -1) {
-      const grabbing = categories[grabPosition];
-      await Api.category.updateCategory(grabbing, grabbing.name, targetPosition + 1);
-      // 오류 컨트롤 필요
-      getCategories();
-      setGrab(null);
+      if (targetPosition !== -1) {
+        const grabbing = categories[grabPosition];
+        await Api.category.updateCategory(grabbing, grabbing.name, targetPosition + 1);
+        getCategories();
+        setGrab(null);
+      }
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "카테고리 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }
 
@@ -72,18 +86,27 @@ export default function Categories({ onSelect }) {
   }
 
   async function addNewCategory(name) {
-    if (name !== "") {
-      const isIncludesInCategories = Category.findCategoryWithTargetName(categories, name);
-      if (!isIncludesInCategories) {
-        const targetCategory = Category.fromJson({ name: name, priority: categories.length + 1 });
-        setCategories([...categories, targetCategory]);
-        await Api.category.createNewCategory(targetCategory.name, targetCategory.priority);
-        // 오류 컨트롤 필요
+    try {
+      if (name !== "") {
+        const isIncludesInCategories = Category.findCategoryWithTargetName(categories, name);
+        if (!isIncludesInCategories) {
+          const targetCategory = Category.fromJson({ name: name, priority: categories.length + 1 });
+          setCategories([...categories, targetCategory]);
+          await Api.category.createNewCategory(targetCategory.name, targetCategory.priority);
+        }
+        getCategories();
+        setNewCategory("");
+      } else {
+        openNotification("top", "이미 카테고리가 존재합니다.");
       }
-      getCategories();
-      setNewCategory("");
-    } else {
-      alert("이미 카테고리 있음");
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "카테고리 생성에 실패했습니다.", "카테고리 정보가 올바르지 않습니다.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }
 
@@ -105,10 +128,15 @@ export default function Categories({ onSelect }) {
     }
     try {
       await Api.category.updateCategory(targetCategory, newName, targetCategory.priority);
-      // 오류 컨트롤 필요
       getCategories();
     } catch (err) {
-      alert("문제가 있음");
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "카테고리 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
     }
   }
 
@@ -125,8 +153,17 @@ export default function Categories({ onSelect }) {
     }
 
     setCategories(newCategories);
-    await Api.category.deleteCategory(targetCategory);
-    // 오류 컨트롤 필요
+    try {
+      await Api.category.deleteCategory(targetCategory);
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        openNotification("top", "카테고리 삭제에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
+    }
   }
 
   return (

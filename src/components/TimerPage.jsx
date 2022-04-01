@@ -20,9 +20,17 @@ export default function TimerPage({ onClickReport }) {
   }, []);
 
   const saveTask = useCallback(async () => {
-    const data = await Api.task.createNewTask(newTask);
-    data ? openNotification("top", "Task를 저장했습니다", "Report에서 자세하게 확인할 수 있습니다", <CheckCircleOutlined />) : openNotification("top", "Task를 저장하지 못했습니다", "잠시 후 다시 시도해주세요");
-    return data;
+    try {
+      const data = await Api.task.createNewTask(newTask);
+      data ? openNotification("top", "Task를 저장했습니다", "Report에서 자세하게 확인할 수 있습니다", <CheckCircleOutlined />) : openNotification("top", "Task를 저장하지 못했습니다", "잠시 후 다시 시도해주세요");
+      return data;
+    } catch (err) {
+      if (err.response && err.response.status === 500) {
+        openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else {
+        openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      }
+    }
   }, [newTask]);
 
   const setNewTaskValue = useCallback((key, value) => {

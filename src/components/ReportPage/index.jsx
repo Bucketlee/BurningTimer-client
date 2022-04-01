@@ -3,6 +3,7 @@ import React, { useEffect, useCallback, useState } from "react";
 import Api from "../../api";
 import Task from "../../models/task";
 import ReportPageView from "./ReportPageView";
+import { openNotification } from "../antdCustom";
 
 const standardDate = new Date();
 const year = standardDate.getFullYear();
@@ -83,8 +84,16 @@ export default function ReportPage() {
 
   useEffect(() => {
     async function getTasks() {
-      const data = await Api.task.getTasks();
-      setTasks(data);
+      try {
+        const data = await Api.task.getTasks();
+        setTasks(data);
+      } catch (err) {
+        if (err.response && err.response.status === 500) {
+          openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        } else {
+          openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        }
+      }
     }
     getTasks();
   }, []);
