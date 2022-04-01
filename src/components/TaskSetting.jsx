@@ -23,6 +23,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
 
   const steps = [
     {
+      id: "category",
       title: "Category",
       description: "카테고리를 선택해주세요",
       content: (
@@ -39,6 +40,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       ),
     },
     {
+      id: "label",
       title: "Label",
       description: "라벨을 선택해주세요",
       content: (
@@ -55,6 +57,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       ),
     },
     {
+      id: "goal-time",
       title: "Goal Time",
       description: "목표 시간을 선택해주세요",
       content: (
@@ -120,11 +123,9 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
     return (
       <Menu>
         {arr.map((el, i) => (
-          <>
-            <Menu.Item key={`dropdown-${el.name}`}>
-              <ListButtonWrapper onClick={() => onClick(el)} lastItem={i === arr.length-1 ? true : false}>{el.name}</ListButtonWrapper>
-            </Menu.Item>
-          </>
+          <Menu.Item key={`dropdown-${el.name}`}>
+            <ListButtonWrapper onClick={() => onClick(el)} lastItem={i === arr.length-1 ? true : false}>{el.name}</ListButtonWrapper>
+          </Menu.Item>
         ))}
       </Menu>
     );
@@ -147,7 +148,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       <Global styles={TimePickerPanelStyled} />
       <Steps progressDot current={current} direction="vertical" style={{ gridArea: "step"}}>
         {steps.map(item => (
-          <Step key={item.title} title={item.title} description={item.description} />
+          <Step title={item.title} description={item.description} />
         ))}
       </Steps>
       {steps.map(step => step.content)}

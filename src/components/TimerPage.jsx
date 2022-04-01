@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "@emotion/styled";
 import { Global, css } from "@emotion/react";
-import { Modal, List } from "antd";
+import { List } from "antd";
 import { ExclamationCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 
 import Api from "../api";
@@ -10,7 +10,7 @@ import TimerSteps from "./TimerSteps";
 import TaskSetting from "./TaskSetting";
 import TimerDisplay from "./TimerDisplay";
 import Result from "./Result";
-import { openNotification } from "./antdCustom";
+import { openNotification, checkModal } from "./antdCustom";
 
 export default function TimerPage({ onClickReport }) {
   const [current, setCurrent] = useState(0);
@@ -155,17 +155,19 @@ export default function TimerPage({ onClickReport }) {
 
   function checkBeforeBackToFirst() {
     if (current === 1 && newTask.startTimestamp) {
-      Modal.confirm({
-        title: "아직 Task를 저장하지 않았습니다.",
+      const ModalInfo = {
         icon: <ExclamationCircleOutlined />,
+        title: "아직 Task를 저장하지 않았습니다.",
         content: "Task를 저장하시려면 타이머의 STOP 버튼을 눌러 종료해 주세요.",
         okText: "돌아가기",
         cancelText: "저장안함",
+        onOk: () => {},
         onCancel: () => {
           resetNewTaskValueValue();
           setCurrent(0);
         },
-      });
+      }
+      checkModal(ModalInfo);
       return;
     }
 

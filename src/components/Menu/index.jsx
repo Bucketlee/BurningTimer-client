@@ -6,17 +6,41 @@ import { UnorderedListOutlined, FieldTimeOutlined, LineChartOutlined } from "@an
 import { useNavigate } from "react-router-dom";
 
 import MenuView from "./MenuView";
+import { checkModal } from "../antdCustom";
 
 export default function Menu({ current }) {
   const navigate = useNavigate();
 
-  function onSelectMenu(name) {
-    if (name === "Label") {
-      navigate("/app/label");
-    } else if (name === "Timer") {
-      navigate("/app/timer");
-    } else if (name === "Report") {
-      navigate("/app/report");
+  function onSelectMenu(c) {
+    if (current === c) {
+      return;
+    }
+
+    if (current === 1) {
+      const ModalInfo = {
+        icon: undefined,
+        title: "Task 정보를 잃을 수 있습니다.",
+        content: "이동하기 전에 Task를 저장하시려면 타이머의 STOP 버튼을 눌러 종료해 주세요.",
+        okText: "돌아가기",
+        cancelText: "저장안함",
+        onOk: () => {},
+        onCancel: () => {
+          if (c === 0) {
+            navigate("/app/label");
+          } else if (c === 2) {
+            navigate("/app/report");
+          }
+        },
+      }
+      checkModal(ModalInfo);
+    } else {
+      if (c === 0) {
+        navigate("/app/label");
+      } else if (c === 1) {
+        navigate("/app/timer");
+      } else if (c === 2) {
+        navigate("/app/report");
+      }
     }
   }
 
@@ -35,7 +59,7 @@ export default function Menu({ current }) {
   const list = menu.map((m, i) => {
     return (
       <Popover key={`menu-popover-${i}`} content={<PopoverContentWrapper>{m}</PopoverContentWrapper>} trigger="hover">
-        <ButtonWrapper current={current === i} onClick={() => onSelectMenu(m)}>
+        <ButtonWrapper current={current === i} onClick={() => onSelectMenu(i)}>
           {current === i ? <DotWrapper /> : <div />}
           {icons[i]}
         </ButtonWrapper>
