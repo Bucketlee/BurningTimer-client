@@ -1,5 +1,9 @@
-html, body, #root, .App {
+#root {
   height: 100vh;
   color: #27251F;
   font-family: sans-serif;
+}
+
+button {
+  cursor: pointer;
 }

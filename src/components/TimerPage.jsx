@@ -237,7 +237,7 @@ const ContentsWrapper = styled.div`
   background-color: #FFFFFF;
   padding: 25px;
   max-height: 100vh;
-  overflow: scroll;
+  overflow: auto;
 `
 
 const notificationStyled = css`

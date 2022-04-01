@@ -7,6 +7,7 @@ import AuthButton from "../AuthButton";
 import GoogleLoginButton from "../GoogleLoginButton";
 
 export default function LoginPageView({
+  headerButtons,
   onUserNameChange,
   onPasswordChange,
   onKeyPress,
@@ -18,7 +19,7 @@ export default function LoginPageView({
 }) {
   return(
     <LoginPageViewWrapper>
-      <Header />
+      <Header buttons={headerButtons} />
       <AuthInfoWrapper>
         <AuthHeaderWrapper>로그인</AuthHeaderWrapper>
         <FormWrapper className="log-form" method="POST">

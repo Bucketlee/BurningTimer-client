@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "@emotion/styled";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +14,13 @@ export default function SignupPage() {
   const [email, setEmail] = useState(undefined);
 
   const navigate = useNavigate();
+
+  const buttons = (
+    <div>
+      <HeaderButtonWrapper onClick={() => navigate("/")}>Home</HeaderButtonWrapper>
+      <HeaderButtonWrapper onClick={() => navigate("/auth/login")}>Login</HeaderButtonWrapper>
+    </div>
+  );
 
   async function signupMembership() {
     try {
@@ -67,6 +75,7 @@ export default function SignupPage() {
 
   return (
     <SignUpPageView
+      headerButtons={buttons}
       onUserNameChange={setUsername}
       onPasswordChange={setPassword}
       onPasswordCheckChange={setPasswordCheck}
@@ -78,3 +87,11 @@ export default function SignupPage() {
   );
 }
 
+const HeaderButtonWrapper = styled.button`
+  background: none;
+  border: none;
+  margin-right: 10px;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-Weight: 600;
+`

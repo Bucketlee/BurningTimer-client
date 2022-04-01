@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "@emotion/styled";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
@@ -18,6 +19,10 @@ export default function LoginPage() {
     }
   }, [navigate]);
 
+  const button = (
+    <HeaderButtonWrapper onClick={() => navigate("/")}>Home</HeaderButtonWrapper>
+  );
+
   async function login() {
     try {
       if (!username) {
@@ -29,7 +34,7 @@ export default function LoginPage() {
       }
       await Api.auth.login(username.toLowerCase(), password);
       openNotification("top", "로그인 되셨습니다.", "", <CheckCircleOutlined style={{ color: "#27251F" }} />);
-      navigate("/auth/login");
+      navigate("/app");
     } catch (err) {
       if (err.response && err.response.data.message === "Please, Check your ID") {
         openNotification("top", "아이디가 존재하지 않습니다.");
@@ -51,6 +56,7 @@ export default function LoginPage() {
     try {
       await Api.auth.login(info.socialId.toLowerCase(), info.socialId);
       openNotification("top", "로그인 되셨습니다.", "", <CheckCircleOutlined style={{ color: "#27251F" }} />);
+      navigate("/app");
     } catch (err) {
       if (err.response && err.response.status === 401) {
         await Api.auth.signUp(info.socialId.toLowerCase(), info.socialId.toLowerCase(), info.email);
@@ -65,6 +71,7 @@ export default function LoginPage() {
 
   return (
     <LoginPageView
+      headerButtons={button}
       onUserNameChange={setUsername}
       onPasswordChange={setPassword}
       onKeyPress={onKeyPressEnter}
@@ -76,3 +83,12 @@ export default function LoginPage() {
     />
   );
 }
+
+const HeaderButtonWrapper = styled.button`
+  background: none;
+  border: none;
+  margin-right: 10px;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-Weight: 600;
+`

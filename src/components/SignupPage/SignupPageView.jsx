@@ -6,6 +6,7 @@ import Header from "../Header";
 import AuthButton from "../AuthButton";
 
 export default function SignupPageView({
+  headerButtons,
   onUserNameChange,
   onPasswordChange,
   onPasswordCheckChange,
@@ -15,7 +16,7 @@ export default function SignupPageView({
 }) {
   return (
     <SignupPageViewWrapper>
-      <Header />
+      <Header buttons={headerButtons} />
       <AuthInfoWrapper>
         <AuthHeaderWrapper>회원가입</AuthHeaderWrapper>
         <FormWrapper id="sign-up-form" method="POST">
