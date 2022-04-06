@@ -93,6 +93,10 @@ const InputWrapper = styled.input`
   width: 100%;
   height: 30px;
   margin: 5px 0 15px 0;
+
+  &:focus {
+    outline: 1px solid #DA291C;
+  }
 `
 
 SignupPageView.propTypes = {

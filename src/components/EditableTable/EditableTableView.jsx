@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { Global, css } from "@emotion/react";
 import { Table, Modal } from "antd";
 
 export default function EditableTableView({
@@ -12,6 +13,7 @@ export default function EditableTableView({
 }) {
   return (
     <div>
+      <Global styles={ModalStyled} />
       <EditButton onClick={onClickEditButton}>
         자세히보기
       </EditButton>
@@ -21,6 +23,16 @@ export default function EditableTableView({
     </div>
   );
 }
+
+const ModalStyled = css`
+  .ant-pagination-item-active {
+    border-color: #DA291C !important;
+
+    a {
+      color: #DA291C !important;
+    }
+  }
+`
 
 const EditButton = styled.button`
   color: #DA291C;
