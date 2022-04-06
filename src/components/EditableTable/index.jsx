@@ -42,26 +42,31 @@ export default function EditableTable({ data }) {
     {
       title: "날짜",
       dataIndex: "date",
+      key: "date",
       width: "12%",
     },
     {
       title: "목표 시간",
       dataIndex: "goal",
+      key: "goal",
       width: "12%",
     },
     {
       title: "진행 시간",
       dataIndex: "time",
+      key: "time",
       width: "12%",
     },
     {
       title: "메모",
       dataIndex: "memo",
+      key: "memo",
       width: "28%",
     },
     {
       title: "딴짓",
       dataIndex: "distraction",
+      key: "distraction",
       width: "28%",
     },
     {

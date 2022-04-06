@@ -12,7 +12,7 @@ export default function TaskSettingView({ current, steps }) {
       <Global styles={TimePickerPanelStyled} />
       <Steps progressDot current={current} direction="vertical" style={{ gridArea: "step"}}>
         {steps.map(item => (
-          <Step title={item.title} description={item.description} />
+          <Step key={`step-${item.title}`} title={item.title} description={item.description} />
         ))}
       </Steps>
       {steps.map(step => step.content)}
