@@ -1,18 +1,22 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, RocketOutlined } from "@ant-design/icons";
 
-export default function MenuView({ menu, onClickLogo, onLogout }) {
+export default function MenuView({ menu, onClickLogo, onClickProposal, onLogout }) {
   return (
     <MenuWrapper>
       <LogoWrapper className="logo" onClick={() => onClickLogo()}>
         <LogoImg alt="logo" src={"/image/logo-icon.png"}></LogoImg>
       </LogoWrapper>
       <ListWrapper>{menu}</ListWrapper>
-      <LogoutWarpper onClick={() => onLogout()}>
-        <LogoutOutlined style={LogoutStyled} />
-        <LogoutDescription>로그아웃</LogoutDescription>
-      </LogoutWarpper>
+      <DefalutMenuWarpper onClick={() => onClickProposal()}>
+        <RocketOutlined style={IconStyled} />
+        <TextWrapper>제안하기</TextWrapper>
+      </DefalutMenuWarpper>
+      <DefalutMenuWarpper onClick={() => onLogout()}>
+        <LogoutOutlined style={IconStyled} />
+        <TextWrapper>로그아웃</TextWrapper>
+      </DefalutMenuWarpper>
     </MenuWrapper>
   );
 }
@@ -20,7 +24,7 @@ export default function MenuView({ menu, onClickLogo, onLogout }) {
 const MenuWrapper = styled.div`
   background-color: #F2F2F2;
   display: grid;
-  grid-template-rows: 80px auto 50px;
+  grid-template-rows: 80px auto 80px 50px;
   height: 100%;
 `
 
@@ -41,17 +45,18 @@ const ListWrapper = styled.div`
   background-color: #F2F2F2;
 `
 
-const LogoutWarpper = styled.button`
+const DefalutMenuWarpper = styled.button`
+  margin-top: 5px;
   border: none;
   background: none;
 `
 
-const LogoutStyled = {
+const IconStyled = {
   "color": "#27251F",
   "fontSize": "32px",
 }
 
-const LogoutDescription = styled.div`
+const TextWrapper = styled.div`
   margin-top: 5px;
   font-size: 10px;
 `

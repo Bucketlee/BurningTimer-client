@@ -6,7 +6,10 @@ import { UnorderedListOutlined, FieldTimeOutlined, LineChartOutlined } from "@an
 import { useNavigate } from "react-router-dom";
 
 import MenuView from "./MenuView";
-import { checkModal } from "../antdCustom";
+import { checkModal, openInfoModal } from "../antdCustom";
+import TabsBoard from "../TabsBoard";
+import ProposalForm from "../ProposalForm";
+import CardList from "../CardList";
 
 export default function Menu({ current }) {
   const navigate = useNavigate();
@@ -44,6 +47,35 @@ export default function Menu({ current }) {
     }
   }
 
+  function openProposalModal() {
+    const tabs = [
+      {
+        title: "제안하기",
+        content: <ProposalForm />,
+      },
+      {
+        title: "반영예정",
+        content: <CardList />,
+      },
+      {
+        title: "반영완료",
+        content: <div></div>,
+      },
+    ]
+
+    const info = {
+      icon: <></>,
+      title: "자유롭게 보내주세요. 꼼꼼히 읽어볼게요.",
+      content: (
+        <TabsBoard
+          tabs={tabs}
+        />
+      ),
+    }
+
+    openInfoModal(info.icon, info.title, info.content);
+  }
+
   function logout() {
     localStorage.setItem("token", "");
     message.success("로그아웃 되셨습니다.");
@@ -71,6 +103,7 @@ export default function Menu({ current }) {
     <MenuView
       menu={list}
       onClickLogo={() => navigate("/")}
+      onClickProposal={() => openProposalModal()}
       onLogout={logout}
     />
   );
@@ -114,7 +147,6 @@ const DotWrapper = styled.div`
   background-color: #27251F;
   border-radius: 100px;
 `
-
 
 Menu.propTypes = {
   onChangeCurrent: PropTypes.func,
