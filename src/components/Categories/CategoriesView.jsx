@@ -36,6 +36,7 @@ export default function CategoriesView({
             >
               <ButtonWrapper selected={selectedContent === name ? true : false} onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
               <OptionPopup
+                defaultValue={name}
                 confirmEdit={(value) => confirmEditOptionPopup(name, value)}
                 confirmDelete={() => confirmDeleteOptionPopup(name)}
               />
@@ -73,7 +74,6 @@ const UlWrapper = styled.ul`
 `
 
 const LiWrapper = styled.li`
-  padding: 5px 0 5px 15px;
   display: grid;
   grid-template-columns: auto 35px;
 
@@ -83,10 +83,10 @@ const LiWrapper = styled.li`
 `
 
 const ButtonWrapper = styled.button`
-  padding: 0;
+  padding: 5px 0 5px 15px;
   background: none;
   border: none;
-  max-width: 175px;
+  width: 100%;
   color: ${props => props.selected ? "#27251F" : "#797978"};
   font-weight: ${props => props.selected ? "600" : "400" };
   text-align: left;

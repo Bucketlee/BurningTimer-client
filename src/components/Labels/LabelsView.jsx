@@ -45,6 +45,7 @@ export default function LabelsView({
             >
               <ButtonWrapper onClick={() => onClickContent(name)}>{name}</ButtonWrapper>
               <OptionPopup
+                defaultValue={name}
                 confirmEdit={(value) => confirmEditOptionPopup(name, value)}
                 confirmDelete={() => confirmDeleteOptionPopup(name)}
               />
@@ -80,10 +81,10 @@ const UlWrapper = styled.ul`
 `
 
 const LiWrapper = styled.li`
-  padding: 7px 15px;
   display: grid;
   grid-template-columns: auto 40px;
   border-bottom: 1px solid #E2E2E2;
+  min-height: 50px;
 
   &:hover {
     background-color: #E2E2E2;
@@ -91,7 +92,7 @@ const LiWrapper = styled.li`
 `
 
 const ButtonWrapper = styled.button`
-  padding: 0;
+  padding: 7px 15px;
   background: none;
   border: none;
   color: #797978;

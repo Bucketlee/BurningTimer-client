@@ -4,7 +4,7 @@ import "antd/dist/antd.min.css";
 import { FormOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import OptionPopoverView from "./OptionPopoverView";
 
-export default function OptionPopover({ confirmEdit, confirmDelete }) {
+export default function OptionPopover({ defaultValue, confirmEdit, confirmDelete }) {
   const [visible, setVisible] = useState(false);
 
   const editInputRef = useRef(null);
@@ -16,7 +16,7 @@ export default function OptionPopover({ confirmEdit, confirmDelete }) {
     confirm({
       title: "변경할 내용을 입력해주세요.",
       icon: <FormOutlined style={{ color: "#DA291C" }} />,
-      content: <input ref={editInputRef} />,
+      content: <input ref={editInputRef} defaultValue={defaultValue} />,
       okText: "변경",
       cancelText: "취소",
       onOk() {

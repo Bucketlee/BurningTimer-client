@@ -136,7 +136,7 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
     return (
       <Menu>
         {arr.map((el, i) => (
-          <Menu.Item key={`dropdown-${el.name}`}>
+          <Menu.Item key={`dropdown-${el.name}`} style={{ padding: "0", height: "50px" }}>
             <ListButtonWrapper onClick={() => onClick(el)} lastItem={i === arr.length-1 ? true : false}>{el.name}</ListButtonWrapper>
           </Menu.Item>
         ))}
@@ -178,7 +178,7 @@ const ListButtonWrapper = styled.button`
   border: none;
   padding: 0;
   width: 100%;
-  height: 40px;
+  height: 50px;
 `
 
 const ContentWrapper = styled.div`
