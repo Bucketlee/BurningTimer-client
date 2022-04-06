@@ -23,3 +23,14 @@ export function checkModal({ icon, title, content, okText, cancelText, onOk, onC
     onCancel: onCancel,
   });
 }
+
+export function openInfoModal(icon, title, content, okText, onOk) {
+  return Modal.info({
+    icon: icon,
+    title: title,
+    content: content,
+    okText: okText ? okText : "돌아가기",
+    onOk: onOk,
+    width: "70%",
+  })
+}

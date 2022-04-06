@@ -183,4 +183,20 @@ export default class Api {
       }
     },
   }
+
+  static feedback = {
+    async createNewFeedback(newFeedback) {
+      try {
+        const form = {
+          email: newFeedback.email,
+          name: newFeedback.name,
+          content: newFeedback.content,
+        };
+        const { data } = await instance.post("/feedback", form);
+        return data;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }
 }
