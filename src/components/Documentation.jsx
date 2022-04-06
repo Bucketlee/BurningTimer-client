@@ -59,12 +59,14 @@ export default function Documentation({ title, subTitle, defaultContent, onHandl
     onHandleSave(savedData);
   }, [onHandleSave]);
 
+  const holderId = `documentation-${title}`;
+
   return (
     <DocumentationWrapper>
       <TitleWrapper>{title}</TitleWrapper>
       <SubTitleWrapper>{subTitle}</SubTitleWrapper>
-      <ContentWrapper onClick={() => onClickEditor()}>
-        <ReactEditorJS defaultValue={defaultContent ? defaultContent : defaultValue} tools={EDITOR_JS_TOOLS} onInitialize={handleInitialize} onChange={(e) => handleSave(e)} />
+      <ContentWrapper id={holderId} onClick={() => onClickEditor()}>
+        <ReactEditorJS defaultValue={defaultContent ? defaultContent : defaultValue} tools={EDITOR_JS_TOOLS} onInitialize={handleInitialize} onChange={(e) => handleSave(e)} holder={holderId} />
       </ContentWrapper>
     </DocumentationWrapper>
   );
