@@ -42,7 +42,6 @@ const RangePickerStyled = css`
   .ant-picker-cell-range-hover-end::after, .ant-picker-cell-range-hover-start::after, .ant-picker-cell-range-hover::after {
     border-color: #DA291C !important;
   }
-
 `
 
 const DateSelectorWrapper = styled.div`

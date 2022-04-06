@@ -13,7 +13,6 @@ export function openNotification(placement, title, text, icon, duration) {
 };
 
 export function checkModal({ icon, title, content, okText, cancelText, onOk, onCancel }) {
-  console.log(icon, title, content)
   return Modal.confirm({
     icon: icon ? icon : <ExclamationCircleOutlined style={{ color:"#DA291C" }}/>,
     title: title,

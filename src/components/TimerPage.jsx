@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import styled from "@emotion/styled";
-import { Global, css } from "@emotion/react";
 import { List } from "antd";
-import { ExclamationCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined } from "@ant-design/icons";
 
 import Api from "../api";
 import Task from "../models/task";
@@ -25,7 +24,10 @@ export default function TimerPage({ onClickReport }) {
       data ? openNotification("top", "Task를 저장했습니다", "Report에서 자세하게 확인할 수 있습니다", <CheckCircleOutlined />) : openNotification("top", "Task를 저장하지 못했습니다", "잠시 후 다시 시도해주세요");
       return data;
     } catch (err) {
-      if (err.response && err.response.status === 500) {
+      if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
@@ -164,7 +166,6 @@ export default function TimerPage({ onClickReport }) {
   function checkBeforeBackToFirst() {
     if (current === 1 && newTask.startTimestamp) {
       const ModalInfo = {
-        icon: <ExclamationCircleOutlined />,
         title: "아직 Task를 저장하지 않았습니다.",
         content: "Task를 저장하시려면 타이머의 STOP 버튼을 눌러 종료해 주세요.",
         okText: "돌아가기",
@@ -185,7 +186,6 @@ export default function TimerPage({ onClickReport }) {
 
   return (
     <TimerPageWrapper>
-      <Global styles={notificationStyled} />
       <TimerStepsWrapper>
         <TimerSteps
           current={current}
@@ -238,12 +238,6 @@ const ContentsWrapper = styled.div`
   padding: 25px;
   max-height: 100vh;
   overflow: auto;
-`
-
-const notificationStyled = css`
-  .ant-notification-notice-icon {
-    color: #DA291C !important;
-  }
 `
 
 const ResultWrapper = styled.div`

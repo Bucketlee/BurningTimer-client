@@ -62,7 +62,6 @@ const PopoverButtonWrapper = styled.button`
 `
 
 const PopoverStyled = css`
-
   .ant-modal-confirm-content {
     margin-top: 15px;
 

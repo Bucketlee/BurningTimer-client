@@ -20,8 +20,11 @@ export default function Categories({ onSelect }) {
       if (sortedCategories) {
         setCategories(sortedCategories);
       }
-    } catch(err) {
-      if (err.response && err.response.status === 500) {
+    } catch (err) {
+      if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
@@ -70,6 +73,9 @@ export default function Categories({ onSelect }) {
     } catch (err) {
       if (err.response && err.response.status === 400) {
         openNotification("top", "카테고리 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -103,6 +109,9 @@ export default function Categories({ onSelect }) {
     } catch (err) {
       if (err.response && err.response.status === 400) {
         openNotification("top", "카테고리 생성에 실패했습니다.", "카테고리 정보가 올바르지 않습니다.");
+      } else if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -134,6 +143,9 @@ export default function Categories({ onSelect }) {
     } catch (err) {
       if (err.response && err.response.status === 400) {
         openNotification("top", "카테고리 업데이트에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -160,6 +172,9 @@ export default function Categories({ onSelect }) {
     } catch (err) {
       if (err.response && err.response.status === 400) {
         openNotification("top", "카테고리 삭제에 실패했습니다.", "새로고침 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+      } else if (err.response && err.response.status === 401) {
+        localStorage.setItem("token", "");
+        openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
