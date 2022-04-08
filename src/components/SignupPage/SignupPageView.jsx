@@ -72,6 +72,14 @@ const AuthInfoWrapper = styled.div`
   width: 400px;
   margin: auto;
   font-size: 16px;
+
+  @media screen and (max-width:1023px) {
+    width: 50%;
+  }
+
+  @media screen and (max-width:767px) {
+    width: 80%;
+  }
 `
 
 const AuthHeaderWrapper = styled.div`
@@ -81,6 +89,14 @@ const AuthHeaderWrapper = styled.div`
   margin: 0 auto;
   border-bottom: 1px solid #ddd;
   text-align: center;
+
+  @media screen and (max-width:1023px) {
+    font-size: 28px;
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 24px;
+  }
 `
 
 const FormWrapper = styled.form`
@@ -93,6 +109,7 @@ const InputWrapper = styled.input`
   width: 100%;
   height: 30px;
   margin: 5px 0 15px 0;
+  border-radius: 0%;
 
   &:focus {
     outline: 1px solid #DA291C;

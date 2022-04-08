@@ -24,7 +24,7 @@ export default function MenuView({ menu, onClickLogo, onClickProposal, onLogout 
 const MenuWrapper = styled.div`
   background-color: #F2F2F2;
   display: grid;
-  grid-template-rows: 80px auto 80px 50px;
+  grid-template-rows: 80px auto 80px 80px;
   height: 100%;
 `
 
@@ -46,7 +46,6 @@ const ListWrapper = styled.div`
 `
 
 const DefalutMenuWarpper = styled.button`
-  margin-top: 5px;
   border: none;
   background: none;
 `

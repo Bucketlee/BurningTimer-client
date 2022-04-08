@@ -85,6 +85,10 @@ const MainPageWrapper = styled.section`
 
 const IntroWrapper = styled.div`
   margin: 100px 0;
+
+  @media screen and (max-width:767px) {
+    margin: 80px 0;
+  }
 `
 
 const HeaderButtonWrapper = styled.button`
@@ -100,16 +104,33 @@ const TitleWrapper = styled.h1`
   font-size: 72px;
   letter-spacing: -1px;
   font-weight: 800;
+
+  @media screen and (max-width:1023px) {
+    font-size: 58px;
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 44px;
+  }
 `
 
 const DescriptionWrapper = styled.div`
   font-size: 24px;
   letter-spacing: 1px;
   font-weight: 500;
+
+  @media screen and (max-width:1023px) {
+    font-size: 20px;
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 17px;
+    padding: 0 10px;
+  }
 `
 
 const ButtonWrapper = styled.button`
-  width: 220px;
+  width: 230px;
   height: 60px;
   margin-top: 40px;
   border: none;
@@ -122,6 +143,26 @@ const ButtonWrapper = styled.button`
   &:hover {
     font-size: 25px;
     background-color: #FF291CCC;
+  }
+
+  @media screen and (max-width:1023px) {
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
+
+    &:hover {
+      font-size: 21px;
+    }
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 17px;
+    width: 180px;
+    height: 45px;
+
+    &:hover {
+      font-size: 18px;
+    }
   }
 `
 
@@ -144,4 +185,13 @@ const SubTitleWrapper = styled.h2`
   margin: 0 0 30px 0;
   letter-spacing: -1px;
   font-weight: 800;
+
+  @media screen and (max-width:1023px) {
+    font-size: 36px;
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 24px;
+    padding: 0 10px;
+  }
 `

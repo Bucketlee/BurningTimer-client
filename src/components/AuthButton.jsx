@@ -27,6 +27,16 @@ const AuthButtonWrapper = styled.button`
   height: 70px;
   color: ${props => props.color ? props.color : "#FFFFFF" };
   background-color: ${props => props.backgroundColor ? props.backgroundColor : "#DA291C" };
+
+  @media screen and (max-width:1023px) {
+    font-size: 18px;
+    height: 60px;
+  }
+
+  @media screen and (max-width:767px) {
+    font-size: 16px;
+    height: 50px;
+  }
 `
 
 AuthButton.propTypes = {
