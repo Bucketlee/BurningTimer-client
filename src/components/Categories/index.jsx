@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Api from "../../api";
 import Category from "../../models/category";
@@ -10,6 +11,8 @@ export default function Categories({ onSelect }) {
   const [selectedCategory, setSelectedCategory] = useState(undefined);
   const [grab, setGrab] = useState(undefined);
   const [newCategory, setNewCategory] = useState("");
+
+  const navigate = useNavigate();
 
   const getCategories = useCallback(async () => {
     try {
@@ -24,13 +27,14 @@ export default function Categories({ onSelect }) {
       if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     getCategories();
@@ -76,6 +80,7 @@ export default function Categories({ onSelect }) {
       } else if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -112,6 +117,7 @@ export default function Categories({ onSelect }) {
       } else if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -146,6 +152,7 @@ export default function Categories({ onSelect }) {
       } else if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
@@ -175,6 +182,7 @@ export default function Categories({ onSelect }) {
       } else if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "@emotion/styled";
 import { Menu, Dropdown, TimePicker } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 import Api from "../../api";
 import Category from "../../models/category";
@@ -19,6 +20,8 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
 
   const [categories, setCategories] = useState([]);
   const [labels, setLabels] = useState([]);
+
+  const navigate = useNavigate();
 
   const steps = [
     {
@@ -88,13 +91,14 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
-  }, []);
+  }, [navigate]);
 
   const getLabels = useCallback(async () => {
     try {
@@ -111,13 +115,14 @@ export default function TaskSetting({ onSelectCategory, onSelectLabel, onTimeCha
       if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
-  }, [category]);
+  }, [category, navigate]);
 
   useEffect(() => {
     getCategories();

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Api from "../../api";
 import Task from "../../models/task";
@@ -80,6 +81,8 @@ export const reportColumns = [
 export default function DetailTable({ data, selectedDate }) {
   const [dataSource, setDataSource] = useState([]);
 
+  const navigate = useNavigate();
+
   function getPeriodDays(startDate, endDate) {
     const result = (Date.parse(endDate) - Date.parse(startDate))/(1000*60*60*24) + 1;
     return result;
@@ -90,7 +93,7 @@ export default function DetailTable({ data, selectedDate }) {
     return result;
   }
 
-  async function selectCategoriesFromTask(tasks) {
+  const selectCategoriesFromTask = useCallback(async (tasks) => {
     try {
       const selectedCategoriesId = Task.getCategoriesIdFromSelectedTask(tasks);
       const categories = await Api.category.getAllCategories();
@@ -100,16 +103,17 @@ export default function DetailTable({ data, selectedDate }) {
       if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
-  }
+  }, [navigate]);
 
 
-  async function selectLabelsFromTask(tasks) {
+  const selectLabelsFromTask = useCallback(async (tasks) => {
     try {
       const selectedLabelsId = Task.getLabelsIdFromSelectedTask(tasks);
       const labels = await Api.label.getAllLabels();
@@ -119,13 +123,14 @@ export default function DetailTable({ data, selectedDate }) {
       if (err.response && err.response.status === 401) {
         localStorage.setItem("token", "");
         openNotification("top", "로그인 정보가 올바르지 않습니다.", "다시 로그인 해주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
+        navigate("/auth/login");
       } else if (err.response && err.response.status === 500) {
         openNotification("top", "서버에 오류가 있습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       } else {
         openNotification("top", "서버에 연결되지 않습니다.", "잠시 후 다시 시도해 주세요. 해당 문제가 반복될 경우 고객센터로 문의해 주세요.");
       }
     }
-  }
+  }, [navigate]);
 
   const makeTableData = useCallback(async () => {
     const result = {};
@@ -181,7 +186,7 @@ export default function DetailTable({ data, selectedDate }) {
     });
 
     setDataSource(temporaryDataSource);
-  }, [data, selectedDate]);
+  }, [data, selectedDate, selectCategoriesFromTask, selectLabelsFromTask]);
 
   useEffect(() => {
     if (data) {
